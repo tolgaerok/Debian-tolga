@@ -44,8 +44,6 @@ for dir in /mnt/*; do
     fi
 done
 
-
-
 sudo systemctl daemon-reload
 
 # Check if any mounts failed
