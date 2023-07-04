@@ -15,10 +15,11 @@ username=$(id -u -n 1000)
 apt update
 apt upgrade -y
 
-sudo apt-get install gdebi flatpak firmware-realtek bluez bluez-tools libavcodec-extra vlc samba synaptic cifs-utils gnome-software-plugin-flatpak -y
-sudo apt install plocate sntp ntpdate software-properties-common terminator htop neofetch -y
+# Install some software
+sudo apt install -y gdebi flatpak firmware-realtek bluez bluez-tools libavcodec-extra vlc samba synaptic cifs-utils gnome-software-plugin-flatpak
+sudo apt install -y plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox nala
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install flathub com.sindresorhus.Caprine
+sudo flatpak install -y flathub com.sindresorhus.Caprine
 
 # Download teamviewer
 download_url="https://dl.teamviewer.com/download/linux/version_15x/teamviewer_15.43.6_amd64.deb?utm_source=google&utm_medium=cpc&utm_campaign=au%7Cb%7Cpr%7C22%7Cjun%7Ctv-core-brand-only-exact-sn%7Cfree%7Ct0%7C0&utm_content=Exact&utm_term=teamviewer&ref=https%3A%2F%2Fwww.teamviewer.com%2Fen-au%2Fdownload%2Flinux%2F%3Futm_source%3Dgoogle%26utm_medium%3Dcpc%26utm_campaign%3Dau%257Cb%257Cpr%257C22%257Cjun%257Ctv-core-brand-only-exact-sn%257Cfree%257Ct0%257C0%26utm_content%3DExact%26utm_term%3Dteamviewer"
