@@ -16,7 +16,7 @@ apt update
 apt upgrade -y
 
 # Install some software
-sudo apt install -y gdebi flatpak firmware-realtek bluez bluez-tools libavcodec-extra vlc samba synaptic cifs-utils gnome-software-plugin-flatpak
+sudo apt install -y gdebi flatpak firmware-realtek bluez bluez-tools libavcodec-extra vlc samba synaptic cifs-utils gnome-software-plugin-flatpak            
 sudo apt install -y plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox nala
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install -y flathub com.sindresorhus.Caprine
