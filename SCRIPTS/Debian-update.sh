@@ -145,6 +145,6 @@ while true; do
     *) echo "Invalid option. Please try again." ;;
     esac
 
-    echo "Press Enter to continue..."
+    echo "Press Enter to continue...."
     read -r
 done
