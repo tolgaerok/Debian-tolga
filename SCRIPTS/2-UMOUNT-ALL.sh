@@ -19,21 +19,16 @@ echo -e "\033[1;37m"
 # Function to unmount a directory
 unmount_directory() {
     local dir="$1"
-    
-    # Unmount the directory
+
+    # Unmount the directory forcefully
     sudo umount -lf "$dir"
-    
-    # Wait until the directory is unmounted
-    while mountpoint -q "$dir"; do
-        sleep 1
-    done
-    
+
     # Check if unmounting was successful
     if mountpoint -q "$dir"; then
         echo "Unmount of $dir failed"
         return 1
     fi
-    
+
     return 0
 }
 
@@ -48,7 +43,7 @@ while IFS= read -r mount_point; do
 done < <(sudo mount | awk '$3 ~ /^\/media/ {print $3}')
 
 # Check if any unmounts failed
-if sudo mount | grep -E '^/mnt/|^/media/' > /dev/null; then
+if sudo mount | grep -E '^/mnt/|^/media/' >/dev/null; then
     echo "Unable to unmount all filesystems under /mnt and /media"
 else
     echo -e "\033[1;33m"
@@ -56,3 +51,5 @@ else
 fi
 
 exit 0
+
+
