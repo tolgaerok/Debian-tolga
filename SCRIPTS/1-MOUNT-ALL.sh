@@ -4,7 +4,7 @@
 #   Tolga Erok
 #   May 29, 2023
 #
-#   This script mounts all mount points located under the /mnt and /media directories.
+#   This script mounts all mount points located under the /mnt directories.
 #   It uses a function called "mount_directory" to mount each directory individually.
 #   The script provides feedback on the success or failure of each mount operation.
 #   At the end, it displays a summary indicating if all directories were successfully mounted or not.
