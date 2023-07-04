@@ -4,7 +4,7 @@
 #   Tolga Erok
 #   May 29, 2023
 #
-#   This script un-mounts all mount points located under the /mnt and /media directories.
+#   This script un-mounts all mount points located under the /mnt directories.
 #   It uses a function called "umount_directory" to un-mount each directory individually.
 #   The script provides feedback on the success or failure of each un-mount operation.
 #   At the end, it displays a summary indicating if all directories were successfully un-mounted or not.
@@ -46,10 +46,21 @@ done < <(sudo mount | awk '$3 ~ /^\/media/ {print $3}')
 if sudo mount | grep -E '^/mnt/|^/media/' >/dev/null; then
     echo "Unable to unmount all filesystems under /mnt and /media"
 else
-    echo -e "\033[1;33m"
-    echo "Unmounting done."
+    echo -e "\033[1;33mUnmounting done.\033[0m"
+
+    # Prompt the user to choose whether to suspend
+    read -rp "Do you want to suspend the system? (y/n): " choice
+    case "$choice" in
+    [yY])
+        # Suspend the system
+        echo -e "\033[34mSuspending system...\033[0m"
+        sleep 2 # Add a short delay before suspend to ensure messages are displayed
+        sudo systemctl suspend
+        ;;
+    *)
+        echo "System not suspended."
+        ;;
+    esac
 fi
 
 exit 0
-
-
