@@ -10,6 +10,12 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 username=$(id -u -n 1000)
+builddir=$(pwd)
+
+USER_PIC="/home/$username/Pictures/CUSTOM-WALLPAPERS"
+SAMBA="/etc/samba"
+SMB_DIR="$builddir/SAMBA"
+WALLPAPERS_DIR="$builddir/WALLPAPERS"
 
 # Update packages list and update system
 apt update
@@ -120,9 +126,6 @@ else
     echo "Video acceleration drivers installed successfully."
 fi
 
-builddir=$(dirname "$0")
-cd "$builddir"
-
 # Samba configurations files
 read -r -p "Copying samba files? 
 " -t 2 -n 1 -s
@@ -148,16 +151,26 @@ sudo mv /etc/samba/!(ORIGINAL) "$original_folder"
 # Copy contents of /etc/samba to backup folder
 sudo cp -R "$original_folder"/* "$backup_folder"
 
-# Specify the source folder path
-source_folder="$builddir/SAMBA"
-
-# Check if the source folder exists
-if [ -d "$source_folder" ]; then
-    # Copy contents of script's samba folder to /etc/samba
-    sudo cp -R "$source_folder"/* /etc/samba
-else
-    echo "Source folder not found: $source_folder"
+# Check if the SMB_DIR exists
+if [ ! -d "$SMB_DIR" ]; then
+    echo "Error: $SMB_DIR directory not found."
+    exit 1
 fi
+
+# Copy the files from SMB_DIR to TARGET_DIR
+cp -R "$SMB_DIR"/* "$SAMBA"
+
+# Check if the copy operation was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to copy files from $SMB_DIR to $SAMBA."
+    exit 1
+fi
+
+echo ""
+echo "Samba Files copied successfully!"
+echo "SMB_DIR: $SMB_DIR"
+echo "SMB TARGET_DIR: $SAMBA"
+echo ""
 
 # Refresh /etc/samba
 sudo systemctl restart smb.service
@@ -312,25 +325,32 @@ Continuing..." -t 1 -n 1 -s
 read -r -p "Copy WALLPAPER to user home
 " -t 2 -n 1 -s
 
-folder_path="/home/$username/Pictures/CustomWallpapers"
+# Create the TARGET_DIR if it doesn't exist
+mkdir -p "$USER_PIC"
 
-if [ ! -d "$folder_path" ]; then
-    echo "Creating folder 'CustomWallpapers'..."
-    sudo mkdir -p "$folder_path"
-    sudo chmod -R 700 "$folder_path"
-    sudo chown -R "$username:$username" "$folder_path"
+# Copy the files from WALLPAPERS to TARGET_DIR
+cp -r "$WALLPAPERS_DIR"/* "$USER_PIC"
+chown -R $username:$username /home/$username
+
+# Check if the copy operation was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to copy files from $WALLPAPERS_DIR to $USER_PIC."
+    exit 1
 fi
 
-echo "Copying WALLPAPER to $folder_path..."
-sudo cp -r "$builddir/WALLPAPERS"/* "$folder_path"
-sudo chmod -R 700 "$folder_path"
-sudo chown -R "$username:$username" "$folder_path"
+echo ""
+echo "Wallpaper Files copied successfully!"
+echo "WALLPAPERS_DIR: $WALLPAPERS_DIR"
+echo "WALLPAPERTARGET_DIR: $USER_PIC"
+echo ""
 
 echo "Continuing..."
 sleep 1
 
 echo "Done. Time to defrag or fstrim."
 sudo fstrim -av
+echo ""
 echo "Operation completed."
+echo ""
 
 exit 0
