@@ -56,7 +56,7 @@ sudo apt-get install git -y
 2. Open Terminal, type:
 
 ```sh
-git clone tolgaerok/Debian-tolga
+git clone https://github.com/tolgaerok/Debian-tolga.git
 cd ./Debian-tolga
 ```
 
