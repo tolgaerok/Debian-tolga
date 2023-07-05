@@ -1,8 +1,9 @@
-*Tolga Erok*
+# *`My debian environment`*
+```sh
+Tolga Erok
+2/7/2023
+```
 
-`2/7/2023`
-
-# *My debian environment*
 ## How to run?
 
 1. Make sure `git` is usable<br>
