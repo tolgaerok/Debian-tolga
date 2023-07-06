@@ -64,7 +64,7 @@ function remove_residual_config_files() {
 
 # Function to clean up unused dependencies
 function cleanup_unused_dependencies() {
-    sudo apt-get autoremove -y
+    sudo apt-get autoclean -y
     echo "Unused dependencies cleaned up."
 }
 
@@ -117,7 +117,7 @@ function check_distribution_upgrade() {
 
 # Function to list upgradable packages
 function list_upgradable_packages() {
-    apt list --upgradable
+    sudo apt list --upgradable
     echo "Upgradable packages listed."
 }
 
