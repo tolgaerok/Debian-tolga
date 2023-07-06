@@ -15,7 +15,7 @@ builddir=$(pwd)
 USER_PIC="/home/$username/Pictures/CUSTOM-WALLPAPERS"
 SAMBA="/etc/samba"
 SMB_DIR="$builddir/SAMBA"
-WALLPAPERS_DIR="$builddir/WALLPAPERS"
+WALLPAPERS_DIR="$builddir/WALLPAPER"
 
 # Update packages list and update system
 apt update
@@ -34,8 +34,8 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 sudo flatpak install -y flathub com.sindresorhus.Caprine
 
 # Download teamviewer
-download_url="https://dl.teamviewer.com/download/linux/version_15x/teamviewer_15.43.6_amd64.deb?utm_source=google&utm_medium=cpc&utm_campaign=au%7Cb%7Cpr%7C22%7Cjun%7Ctv-core-brand-only-exact-sn%7Cfree%7Ct0%7C0&utm_content=Exact&utm_term=teamviewer&ref=https%3A%2F%2Fwww.teamviewer.com%2Fen-au%2Fdownload%2Flinux%2F%3Futm_source%3Dgoogle%26utm_medium%3Dcpc%26utm_campaign%3Dau%257Cb%257Cpr%257C22%257Cjun%257Ctv-core-brand-only-exact-sn%257Cfree%257Ct0%257C0%26utm_content%3DExact%26utm_term%3Dteamviewer"
-download_location="/tmp/teamviewer_15.43.6_amd64.deb"
+download_url="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb?utm_source=google&utm_medium=cpc&utm_campaign=au%7Cb%7Cpr%7C22%7Cjun%7Ctv-core-download-sn%7Cfree%7Ct0%7C0&utm_content=Download&utm_term=download+teamviewer"
+download_location="/tmp/teamviewer.x86_64.deb"
 
 echo "Downloading teamviewer..."
 wget -O "$download_location" "$download_url"
@@ -43,7 +43,7 @@ wget -O "$download_location" "$download_url"
 # Install Visual Studio Code
 echo "Installing teamviwer..."
 sudo dpkg -i "$download_location"
-sudo apt-get install -f -y
+sudo apt-get install "$download_location" -f -y
 
 # Cleanup
 echo "Cleaning up..."
@@ -59,7 +59,7 @@ wget -O "$download_location" "$download_url"
 # Install Visual Studio Code
 echo "Installing Visual Studio Code..."
 sudo dpkg -i "$download_location"
-sudo apt-get install -f -y
+sudo apt-get install "$download_location" -f -y
 
 # Cleanup
 echo "Cleaning up..."
@@ -272,15 +272,15 @@ read -r -p "Mount the shares and start services
 
 sudo mount -a || {
     echo "Mount failed"
-    exit 1
+    sleep 3
 }
 sudo systemctl enable smb nmb || {
     echo "Failed to enable services"
-    exit 1
+    sleep 3
 }
 sudo systemctl restart smb.service nmb.service || {
     echo "Failed to restart services"
-    exit 1
+    sleep 3
 }
 sudo systemctl daemon-reload
 
@@ -292,35 +292,35 @@ read -r -p "Test the fstab entries" -t 2 -n 1 -s
 
 sudo ls /mnt/home-profiles || {
     echo "Failed to list Linux data"
-    exit 1
+    sleep 3
 }
 sudo ls /mnt/linux-data || {
     echo "Failed to list Linux data"
-    exit 1
+    sleep 3
 }
 sudo ls /mnt/smb || {
     echo "Failed to list SMB share"
-    exit 1
+    sleep 3
 }
 sudo ls /mnt/windows-data || {
     echo "Failed to list Windows data"
-    exit 1
+    sleep 3
 }
 sudo ls /mnt/Budget-Archives || {
     echo "Failed to list Windows data"
-    exit 1
+    sleep 3
 }
 sudo ls /mnt/smb-budget || {
     echo "Failed to list Windows data"
-    exit 1
+    sleep 3
 }
 sudo ls /mnt/smb-rsync || {
     echo "Failed to list Windows data"
-    exit 1
+    sleep 3
 }
 
 read -r -p "
-Continuing..." -t 1 -n 1 -s
+Continuing ..." -t 1 -n 1 -s
 
 read -r -p "Copy WALLPAPER to user home
 " -t 2 -n 1 -s
@@ -329,7 +329,7 @@ read -r -p "Copy WALLPAPER to user home
 mkdir -p "$USER_PIC"
 
 # Copy the files from WALLPAPERS to TARGET_DIR
-cp -r "$WALLPAPERS_DIR"/* "$USER_PIC"
+cp -r "$WALLPAPERS_DIR"/debian12-tolga.jpg "$USER_PIC"
 chown -R $username:$username /home/$username
 
 # Check if the copy operation was successful
@@ -344,13 +344,36 @@ echo "WALLPAPERS_DIR: $WALLPAPERS_DIR"
 echo "WALLPAPERTARGET_DIR: $USER_PIC"
 echo ""
 
-echo "Continuing..."
+echo "Continuing ..."
 sleep 1
 
-echo "Done. Time to defrag or fstrim."
+read -r -p "Installing afew fonts ...
+" -t 2 -n 1 -s
+
+# Installing fonts
+sudo apt install fontawesome-fonts fontawesome-fonts-web
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+unzip FiraCode.zip -d /usr/share/fonts
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
+unzip Meslo.zip -d /usr/share/fonts
+wget https://github.com/tolgaerok/fonts-tolga/raw/main/WPS-FONTS.zip
+unzip WPS-FONTS.zip -d /usr/share/fonts
+
+# Reloading Font
+sudo fc-cache -vf
+
+# Removing zip Files
+rm ./FiraCode.zip ./Meslo.zip ./WPS-FONTS.zip
+
+read -r -p "
+..... Complete" -t 1 -n 1 -s
+
+echo "Done. Time to fstrim."
 sudo fstrim -av
-echo ""
-echo "Operation completed."
-echo ""
+echo -e "\n\n----------------------------------------------"
+echo -e "|                                            |"
+echo -e "|        Setup Complete!                     |"
+echo -e "|                       Enjoy debian!        |"
+echo -e "----------------------------------------------\n\n"
 
 exit 0
