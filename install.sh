@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Tolga Erok    My personal debian 12 installer
+# My personal debian 12 installer, KDE PLASMA
+# Tolga Erok    
 # 28/6/2023
 
 # Check if Script is Run as Root
