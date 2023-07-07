@@ -4,7 +4,7 @@
 # Tolga Erok    
 # 28/6/2023
 
-# Check if Script is Run as Root
+# Check if Script is Run as Root:
 if [[ $EUID -ne 0 ]]; then
     echo "You must be a root user to run this script, please run sudo ./install.sh" 2>&1
     exit 1
@@ -18,40 +18,81 @@ SAMBA="/etc/samba"
 SMB_DIR="$builddir/SAMBA"
 WALLPAPERS_DIR="$builddir/WALLPAPER"
 
-# Update packages list and update system
-apt update
-apt upgrade -y
+# Update packages list and update system:
+echo "$USER"
+sudo sh -c 'echo "deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb https://deb.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware
+deb https://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+deb https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+deb-src https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+" > /etc/apt/sources.list'
 
-# Install nala first
+sudo apt update && sudo apt list --upgradable && sudo apt upgrade -y
+
+# Install nala first:
 sudo apt install nala netselect-apt -y
 
+# Find fastest mirrors. ( Optional ):
 echo "Finding fastest mirrors ..."
-# Find fastest mirrors. ( Optional )
 sudo netselect-apt
 
-# Install some software
+echo "List of fastest mirrors saved into home directory ..."
+sleep 2
+
+# Install Linux Firmware and base packages:
+sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
+
+# Support for additional file systems:
+sudo apt install -y btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools reiserfsprogs reiser4progs udftools xfsprogs disktype
+
+# Fix QT Themeing on GTK based Desktops:
+sudo apt install -y qt5-style-plugins
+
+# Set the environment variable:
+sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
+
+# The default non-free firmware only gives you basic functionality. To get the most out of your Brodcom WiFi chip, install the following firmware packages:
+echo "Install and enable 'ALL' Wifi Functions for Broadcom WiFi...."
+sudo apt install -y broadcom-sta-dkms broadcom-sta-common firmware-brcm80211
+sleep 2
+
+# Install Bluetooth packages:
+echo "Install and enable 'ALL' Bluetooth Functions ..."
+sudo apt install -y bluetooth bluez bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
+sleep 2
+
+# Accsess Root through GUI in KDE (X11 Only):
+sudo apt install -y dbus-x11 policykit-1
+
+# Open Settings as Root:
+sudo pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true dbus-launch systemsettings5
+
+# Install some software:
 sudo apt install -y acl attr bluez bluez-tools cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba simplescreenrecorder snmp software-properties-common sntp synaptic terminator ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind
 sudo apt install -y libavcodec-extra libdvdcss2 libdvd-pkg vlc rar unrar p7zip-rar nvidia-detect
 sudo apt install -y synaptic cifs-utils acl attr samba winbind libpam-winbind libnss-winbind krb5-config krb5-user dnsutils python3-setproctitle ntp chrony plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox plasma-discover-backend-flatpak qapt-deb-installer qapt-utils
 
-# Setup sudo dpkg-reconfigure libdvd-pkg
+# Setup sudo dpkg-reconfigure libdvd-pkg:
 echo
 echo "The necessary components for DVD playback are going to be properly installed and configured on your system...."
-sleep 5
+sleep 3
 sudo dpkg-reconfigure libdvd-pkg
 
-# Set-up flatpak and some flatpak software
+# Set-up flatpak and some flatpak software:
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install -y flathub com.sindresorhus.Caprine
 
-# Download teamviewer
+# Download teamviewer:
 download_url="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb?utm_source=google&utm_medium=cpc&utm_campaign=au%7Cb%7Cpr%7C22%7Cjun%7Ctv-core-download-sn%7Cfree%7Ct0%7C0&utm_content=Download&utm_term=download+teamviewer"
 download_location="/tmp/teamviewer.x86_64.deb"
 
 echo "Downloading teamviewer..."
 wget -O "$download_location" "$download_url"
 
-# Install Visual Studio Code
+# Install Visual Studio Code:
 echo "Installing teamviwer..."
 sudo dpkg -i "$download_location"
 sudo apt-get install "$download_location" -f -y
@@ -92,31 +133,6 @@ sudo apt update && sudo apt install -y powershell
 
 # Start PowerShell
 # pwsh
-
-echo "$USER"
-sudo sh -c 'echo "deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
-deb-src https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
-deb https://deb.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware
-deb-src https://deb.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware
-deb https://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
-deb-src https://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
-deb https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
-deb-src https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
-" > /etc/apt/sources.list'
-
-sudo apt update && sudo apt list --upgradable && sudo apt upgrade -y
-
-# Install Linux Firmware and base packages:
-sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
-
-# Support for additional file systems:
-sudo apt install -y btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools reiserfsprogs reiser4progs udftools xfsprogs disktype
-
-# Fix QT Themeing on GTK based Desktops
-sudo apt install -y qt5-style-plugins
-
-# Set the environment variable
-sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 
 # Check GPU information
 gpu_info=$(lspci | grep -i 'VGA\|3D')
@@ -452,6 +468,17 @@ read -r -p "
 
 echo "Done. Time to fstrim."
 sudo fstrim -av
+
+# Backup installed APT packages
+echo -e "\n\nBackup up your packages list to your home directory"
+sudo dpkg --get-selections > ~/Package.list
+
+echo -e "\n\nBackup list of repositories to your home directory"
+sudo cp /etc/apt/sources.list ~/sources.list
+
+echo -e "\n\Export repo keys to your home directory"
+sudo apt-key exportall > ~/Repo.keys
+
 echo -e "\n\n----------------------------------------------"
 echo -e "|                                            |"
 echo -e "|        Setup Complete!                     |"
