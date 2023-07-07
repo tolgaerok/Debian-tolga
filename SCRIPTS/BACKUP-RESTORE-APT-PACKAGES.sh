@@ -3,9 +3,9 @@
 # My personal debian 12 backup / restore APT packages
 # Tolga Erok    
 # 7/7/2023
-# NOTE: if SUDO is not configured, Simply use root terminal or SU. 
-# CRITICAL: Any packages installed using a .DEB file or other source not
-# included in your repositories/sources.list, must be removed from Package.list before restoring to avoid errors. These packages will need to be reinstalled manually. 
+# NOTE: If SUDO is not configured, Simply use root terminal, or SU. 
+# CRITICAL: Any packages installed using a .DEB file or other source not included in your repositories/sources.list, 
+# must be removed from Package.list before restoring to avoid errors. These packages will need to be reinstalled manually.
 
 # Function to backup installed APT packages
 backup_packages() {
