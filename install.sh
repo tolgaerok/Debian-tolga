@@ -238,9 +238,15 @@ sudo usermod -aG sambashares $username
 # Set permissions for the user's home directory
 sudo chmod 0757 /home/$username
 
-# Start the SMB and NMB services
-sudo systemctl start smb.service
-sudo systemctl start nmb.service
+# Enable and start SMB and NMB services
+sudo systemctl enable smb.service nmb.service
+sudo systemctl start smb.service nmb.service
+
+# Restart SMB and NMB services (optional)
+sudo systemctl restart smb.service nmb.service
+
+# Check Samba configuration
+sudo testparm -s
 
 # Prompt for user to open browser to kde store - share plugin
 read -p $'\n'"Press Enter to open the Samba Filesharing Plugin website. Please select [ install ] when ready ...  " 
