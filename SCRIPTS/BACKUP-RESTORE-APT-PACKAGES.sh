@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# My personal debian 12 backup / restore APT packages
-# Tolga Erok    
+# My personal Debian and Ubuntu backup / restore APT packages
+# Tolga Erok
 # 7/7/2023
-# NOTE: If SUDO is not configured, Simply use root terminal, or SU. 
-# CRITICAL: Any packages installed using a .DEB file or other source not included in your repositories/sources.list, 
-# must be removed from Package.list before restoring to avoid errors. These packages will need to be reinstalled manually.
+# NOTE: if SUDO is not configured, Simply use root terminal or SU.
+# CRITICAL: Any packages installed using a .DEB file or other source not
+# included in your repositories/sources.list, must be removed from Package.list before restoring to avoid errors. These packages will need to be reinstalled manually.
 
 # Function to backup installed APT packages
 backup_packages() {
@@ -16,15 +16,21 @@ backup_packages() {
     sudo cp /etc/apt/sources.list ~/sources.list
 
     echo -e "\nExporting repo keys to your home directory"
-    sudo apt-key exportall > ~/Repo.keys
-    
+    temp_dir=$(mktemp -d)
+    sudo cp -R /etc/apt/trusted.gpg.d "$temp_dir"
+    sudo chown -R "$USER:$USER" "$temp_dir"
+    rm -rf ~/Repo.keys
+    mv "$temp_dir" ~/Repo.keys
+
     echo -e "\nBackup completed successfully."
+    read -n 1 -s -r -p "Press any key to continue..."
+    clear
 }
 
 # Function to restore packages from backup
 restore_packages() {
     echo -e "\nRestoring repo keys from backup"
-    sudo apt-key add ~/Repo.keys
+    sudo cp -R ~/Repo.keys/* /etc/apt/trusted.gpg.d/
 
     echo -e "\nRestoring the list of repositories from backup"
     sudo cp ~/sources.list /etc/apt/sources.list
@@ -36,15 +42,19 @@ restore_packages() {
     sudo apt-get install dselect -y
 
     echo -e "\nRestoring packages from the backup"
-    sudo apt-get install $(cat ~/Package.list | awk '{print $1}')
-    
+    sudo dpkg --set-selections < ~/Package.list
+    sudo apt-get dselect-upgrade -y
+
     echo -e "\nPackage restoration completed successfully."
+    read -n 1 -s -r -p "Press any key to continue..."
+    clear
 }
 
 # Menu
 while true; do
+    clear
     echo -e "\n===================="
-    echo " Debian 12 APT Backup/Restore "
+    echo " Debian and Ubuntu APT Backup/Restore "
     echo "===================="
     echo " 1. Backup installed APT packages"
     echo " 2. Restore APT packages from backup"
@@ -55,6 +65,8 @@ while true; do
         1) backup_packages ;;
         2) restore_packages ;;
         3) break ;;
-        *) echo "Invalid choice. Please enter a valid option (1-3)." ;;
+        *) echo "Invalid choice. Please enter a valid option (1-3)."
+           read -n 1 -s -r -p "Press any key to continue..."
+           clear ;;
     esac
 done
