@@ -67,7 +67,7 @@ sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree 
 sudo apt install -y btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools reiserfsprogs reiser4progs udftools xfsprogs disktype
 
 # Fix QT Themeing on GTK based Desktops:
-sudo apt install -y qt5-style-plugins
+# sudo apt install -y qt5-style-plugins
 
 # Set the environment variable:
 sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
@@ -86,7 +86,7 @@ sleep 2
 sudo apt install -y dbus-x11 policykit-1
 
 # Open Settings as Root:
-sudo pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true dbus-launch systemsettings5
+# sudo pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true dbus-launch systemsettings5
 
 # Install some software:
 sudo apt install -y acl attr bluez bluez-tools cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba simplescreenrecorder snmp software-properties-common sntp synaptic terminator ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind
