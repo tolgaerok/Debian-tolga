@@ -1,3 +1,10 @@
+
+
+# *`My debian environment`*
+```sh
+Tolga Erok
+2/7/2023
+```
 <div align="left">
   <table style="border-collapse: collapse; width: 100%; border: none;">
     <td align="center" style="border: none;">
@@ -9,12 +16,6 @@
     </tr>
   </table>
 </div>
-
-# *`My debian environment`*
-```sh
-Tolga Erok
-2/7/2023
-```
 
 The provided script is a Bash script intended to be used as a Debian 12 installer. It automates various tasks related to system setup and configuration. Here is a breakdown of the script:
 
