@@ -183,10 +183,16 @@ read -r -p "Continuing...
 read -r -p "Install samba and create user/group
 " -t 2 -n 1 -s
 
-sudo groupadd samba
-sudo useradd -m tolga
-sudo smbpasswd -a tolga
-sudo usermod -aG samba tolga
+# Prompt for the desired username for samba
+read -p $'\n'"Enter the username to add to Samba: " sambausername
+
+# Prompt for the desired name for samba
+read -p $'\n'"Enter the group name to add to Samba: " sambagroup
+
+sudo groupadd $sambagroup
+sudo useradd -m $sambausername
+sudo smbpasswd -a $sambausername
+sudo usermod -aG $sambagroup $sambausername
 
 read -r -p "
 Continuing..." -t 1 -n 1 -s
