@@ -23,12 +23,22 @@ apt update
 apt upgrade -y
 
 # Install nala first
-sudo apt install -y nala
+sudo apt install nala netselect-apt -y
+
+echo "Finding fastest mirrors ..."
+# Find fastest mirrors. ( Optional )
+sudo netselect-apt
 
 # Install some software
-sudo apt install -y gdebi flatpak firmware-realtek bluez bluez-tools libavcodec-extra vlc samba synaptic cifs-utils gnome-software-plugin-flatpak
-sudo apt install -y acl attr samba winbind libpam-winbind libnss-winbind krb5-config krb5-user dnsutils python3-setproctitle ntp chrony
-sudo apt install -y plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox
+sudo apt install -y acl attr bluez bluez-tools cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba simplescreenrecorder snmp software-properties-common sntp synaptic terminator ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind
+sudo apt install -y libavcodec-extra libdvdcss2 libdvd-pkg vlc rar unrar p7zip-rar nvidia-detect
+sudo apt install -y synaptic cifs-utils acl attr samba winbind libpam-winbind libnss-winbind krb5-config krb5-user dnsutils python3-setproctitle ntp chrony plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox plasma-discover-backend-flatpak qapt-deb-installer qapt-utils
+
+# Setup sudo dpkg-reconfigure libdvd-pkg
+echo
+echo "The necessary components for DVD playback are going to be properly installed and configured on your system...."
+sleep 5
+sudo dpkg-reconfigure libdvd-pkg
 
 # Set-up flatpak and some flatpak software
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -94,7 +104,19 @@ deb https://deb.debian.org/debian bookworm-backports main contrib non-free non-f
 deb-src https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
 " > /etc/apt/sources.list'
 
-sudo apt update && apt list --upgradable && sudo apt upgrade -y
+sudo apt update && sudo apt list --upgradable && sudo apt upgrade -y
+
+# Install Linux Firmware and base packages:
+sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
+
+# Support for additional file systems:
+sudo apt install -y btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools reiserfsprogs reiser4progs udftools xfsprogs disktype
+
+# Fix QT Themeing on GTK based Desktops
+sudo apt install -y qt5-style-plugins
+
+# Set the environment variable
+sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 
 # Check GPU information
 gpu_info=$(lspci | grep -i 'VGA\|3D')
