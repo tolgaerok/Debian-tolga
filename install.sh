@@ -184,10 +184,10 @@ read -r -p "Install samba and create user/group
 " -t 2 -n 1 -s
 
 # Prompt for the desired username for samba
-read -p $'\n'"Enter the username to add to Samba: " sambausername
+read -p $'\n'"Enter the USERNAME to add to Samba: " sambausername
 
 # Prompt for the desired name for samba
-read -p $'\n'"Enter the group name to add to Samba: " sambagroup
+read -p $'\n'"Enter the GROUP name to add username to Samba: " sambagroup
 
 sudo groupadd $sambagroup
 sudo useradd -m $sambausername
