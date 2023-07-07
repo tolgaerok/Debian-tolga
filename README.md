@@ -24,7 +24,7 @@ The provided script is a Bash script intended to be used as a Debian 12 installe
 - The script updates the package list and upgrades the system using the `apt` package manager.
 - It installs several software packages and dependencies using `apt`. These packages include various utilities and applications such as:
    ```sh
-       Nala, GDebi, Flatpak, firmware drivers, media codecs, Samba, Synaptic, and more.
+   Nala, GDebi, Flatpak, firmware drivers, media codecs, Samba, Synaptic, and more.
    ```
 - The script sets up Flatpak and installs a specific application called "Caprine" from Flathub.
 - It downloads the TeamViewer package from a specified URL and installs it using `dpkg`.
