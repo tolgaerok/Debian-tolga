@@ -53,12 +53,13 @@ restore_packages() {
 # Menu
 while true; do
     clear
-    echo -e "\n===================="
+    echo -e "\n======================================"
     echo " Debian and Ubuntu APT Backup/Restore "
-    echo "===================="
+    echo "======================================"
     echo " 1. Backup installed APT packages"
     echo " 2. Restore APT packages from backup"
     echo " 3. Exit"
+    echo "======================================"
     read -p "Enter your choice (1-3): " choice
 
     case $choice in
