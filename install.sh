@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # My personal debian 12 installer, KDE PLASMA
-# Tolga Erok    
+# Tolga Erok
 # 28/6/2023
 
 # Check if Script is Run as Root:
@@ -47,7 +47,7 @@ sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree 
 
 # Support for additional file systems:
 filesystem_packages=(
-    btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools \
+    btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools
     reiserfsprogs reiser4progs udftools xfsprogs disktype
 )
 
@@ -68,7 +68,7 @@ filesystem_explanations=(
 )
 
 echo "The following packages will be installed:"
-for ((i=0; i<${#filesystem_packages[@]}; i++)); do
+for ((i = 0; i < ${#filesystem_packages[@]}; i++)); do
     echo "- ${filesystem_explanations[i]}"
 done
 
@@ -92,7 +92,7 @@ qt5_explanations=(
 )
 
 echo "The following packages will be installed:"
-for ((i=0; i<${#qt5_packages[@]}; i++)); do
+for ((i = 0; i < ${#qt5_packages[@]}; i++)); do
     echo "- ${qt5_packages[i]} : ${qt5_explanations[i]}"
 done
 
@@ -112,17 +112,17 @@ read -p "Do you want to set the QT_QPA_PLATFORMTHEME environment variable? (y/n)
 
 if [[ $set_variable =~ ^[Yy]$ ]]; then
     echo "Setting the environment variable..."
-    echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
+    echo "export QT_QPA_PLATFORMTHEME=gtk2" >>~/.profile
     echo "Environment variable has been set."
 else
     echo "Skipping environment variable setup."
 fi
 
-# The default non-free firmware only gives you basic functionality. To get the most out of your 
+# The default non-free firmware only gives you basic functionality. To get the most out of your
 # Brodcom WiFi chip, install the following firmware packages::
 echo "Checking if Broadcom Wi-Fi is available on the device..."
 
-if lspci -nnk | grep -i broadcom &> /dev/null; then
+if lspci -nnk | grep -i broadcom &>/dev/null; then
     echo "Broadcom Wi-Fi detected. Installing and enabling 'ALL' Wi-Fi functions..."
     sudo apt install -y broadcom-sta-dkms broadcom-sta-common firmware-brcm80211
     sleep 2
@@ -135,14 +135,14 @@ sleep 2
 # Install Bluetooth packages:
 echo "Checking if Bluetooth is available on the device..."
 
-if lspci -nnk | grep -i bluetooth &> /dev/null; then
+if lspci -nnk | grep -i bluetooth &>/dev/null; then
     echo "Bluetooth detected on the device."
-    
+
     read -rp "Do you want to install Bluetooth packages? (y/n): " choice
 
     if [[ $choice =~ ^[Yy]$ ]]; then
         echo "Installing and enabling 'ALL' Bluetooth functions..."
-        
+
         packages=(
             "bluetooth:                       The Bluetooth core libraries and utilities."
             "bluez:                           The official Bluetooth protocol stack for Linux."
@@ -182,13 +182,13 @@ fi
 
 # Install some software:
 software_packages=(
-    acl attr cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak \
-    gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad \
-    gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop \
-    krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 \
-    libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate \
-    plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba \
-    simplescreenrecorder snmp software-properties-common sntp synaptic terminator \
+    acl attr cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak
+    gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad
+    gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop
+    krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2
+    libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate
+    plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba
+    simplescreenrecorder snmp software-properties-common sntp synaptic terminator
     ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind rar unrar p7zip-rar nvidia-detect
 )
 
@@ -242,7 +242,7 @@ software_explanations=(
 )
 
 echo "The following packages will be installed:"
-for ((i=0; i<${#software_packages[@]}; i++)); do
+for ((i = 0; i < ${#software_packages[@]}; i++)); do
     echo "- ${software_explanations[i]}"
 done
 
@@ -442,7 +442,8 @@ umask 0002
 shared_folder="/home/$username"
 
 # Set permissions for the shared folder and parent directories (excluding hidden files and .cache directory)
-find "$shared_folder" -type d ! -path '/.' ! -path '/.cache' -exec chmod 0757 {} ; 2>/dev/null
+find "$shared_folder" -type d ! -path '/.' ! -path '/.cache' -exec chmod 0757 {}
+2>/dev/null
 
 # Create the sambashares group if it doesn't exist
 sudo groupadd -r sambashares
@@ -475,7 +476,7 @@ sudo systemctl restart smb.service nmb.service
 sudo testparm -s
 
 # Prompt for user to open browser to kde store - share plugin
-read -p $'\n'"Press Enter to open the Samba Filesharing Plugin website. Please select [ install ] when ready ...  " 
+read -p $'\n'"Press Enter to open the Samba Filesharing Plugin website. Please select [ install ] when ready ...  "
 
 # Check if Firefox is installed
 if command -v firefox >/dev/null 2>&1; then
