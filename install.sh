@@ -83,17 +83,17 @@ else
     echo "Package installation skipped."
 fi
 
-qt5-packages=(
+qt5_packages=(
     qt5-style-plugins
 )
 
-qt5-explanations=(
+qt5_explanations=(
     "qt5-style-plugins:     Plugins for QT applications to use GTK-based styles."
 )
 
 echo "The following packages will be installed:"
-for ((i=0; i<${#qt5-packages[@]}; i++)); do
-    echo "- ${qt5-packages[i]} : ${qt5-explanations[i]}"
+for ((i=0; i<${#qt5_packages[@]}; i++)); do
+    echo "- ${qt5_packages[i]} : ${qt5_explanations[i]}"
 done
 
 echo
@@ -101,7 +101,7 @@ read -p "Do you want to proceed with the installation? (y/n): " choice
 
 if [[ $choice =~ ^[Yy]$ ]]; then
     echo "Installing the packages..."
-    sudo apt install -y "${qt5-packages[@]}"
+    sudo apt install -y "${qt5_packages[@]}"
     echo "Package installation completed."
 else
     echo "Package installation skipped."
