@@ -70,7 +70,7 @@ sudo apt install -y btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils 
 # sudo apt install -y qt5-style-plugins
 
 # Set the environment variable:
-sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
+# sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 
 # The default non-free firmware only gives you basic functionality. To get the most out of your Brodcom WiFi chip, install the following firmware packages:
 echo "Install and enable 'ALL' Wifi Functions for Broadcom WiFi...."
@@ -79,17 +79,17 @@ sleep 2
 
 # Install Bluetooth packages:
 echo "Install and enable 'ALL' Bluetooth Functions ..."
-sudo apt install -y bluetooth bluez bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
+sudo apt install -y bluetooth bluez bluez-tools bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
 sleep 2
 
 # Accsess Root through GUI in KDE (X11 Only):
-sudo apt install -y dbus-x11 policykit-1
+# sudo apt install -y dbus-x11 policykit-1
 
 # Open Settings as Root:
 # sudo pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true dbus-launch systemsettings5
 
 # Install some software:
-sudo apt install -y acl attr bluez bluez-tools cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba simplescreenrecorder snmp software-properties-common sntp synaptic terminator ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind
+sudo apt install -y acl attr cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba simplescreenrecorder snmp software-properties-common sntp synaptic terminator ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind
 sudo apt install -y libavcodec-extra libdvdcss2 libdvd-pkg vlc rar unrar p7zip-rar nvidia-detect
 sudo apt install -y synaptic cifs-utils acl attr samba winbind libpam-winbind libnss-winbind krb5-config krb5-user dnsutils python3-setproctitle ntp chrony plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox plasma-discover-backend-flatpak qapt-deb-installer qapt-utils
 
