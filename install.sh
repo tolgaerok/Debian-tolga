@@ -46,23 +46,125 @@ sleep 2
 sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
 
 # Support for additional file systems:
-sudo apt install -y btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools reiserfsprogs reiser4progs udftools xfsprogs disktype
+filesystem-packages=(
+    btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools \
+    reiserfsprogs reiser4progs udftools xfsprogs disktype
+)
 
-# Fix QT Themeing on GTK based Desktops:
-# sudo apt install -y qt5-style-plugins
+filesystem-explanations=(
+    "btrfs-progs: Tools for managing Btrfs file systems."
+    "exfatprogs: Utilities for exFAT file system."
+    "f2fs-tools: Utilities for Flash-Friendly File System (F2FS)."
+    "hfsprogs: Tools for HFS and HFS+ file systems."
+    "hfsplus: Tools for HFS+ file system."
+    "jfsutils: Utilities for JFS (Journaled File System)."
+    "lvm2: Logical Volume Manager 2 utilities."
+    "nilfs-tools: Tools for NILFS (New Implementation of a Log-structured File System)."
+    "reiserfsprogs: Tools for ReiserFS file system."
+    "reiser4progs: Tools for Reiser4 file system."
+    "udftools: Tools for UDF (Universal Disk Format) file system."
+    "xfsprogs: Tools for managing XFS file systems."
+    "disktype: Detects the content format of a disk or disk image."
+)
 
-# Set the environment variable:
-# sudo echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
+echo "The following packages will be installed:"
+for ((i=0; i<${#filesystem-packages[@]}; i++)); do
+    echo "- ${filesystem-packages[i]} : ${filesystem-explanations[i]}"
+done
 
-# The default non-free firmware only gives you basic functionality. To get the most out of your Brodcom WiFi chip, install the following firmware packages:
-echo "Install and enable 'ALL' Wifi Functions for Broadcom WiFi...."
-sudo apt install -y broadcom-sta-dkms broadcom-sta-common firmware-brcm80211
+echo
+read -p "Do you want to proceed with the installation? (y/n): " choice
+
+if [[ $choice =~ ^[Yy]$ ]]; then
+    echo "Installing the packages..."
+    sudo apt install -y "${filesystem-packages[@]}"
+    echo "Package installation completed."
+else
+    echo "Package installation skipped."
+fi
+
+qt5-packages=(
+    qt5-style-plugins
+)
+
+qt5-explanations=(
+    "qt5-style-plugins: Plugins for QT applications to use GTK-based styles."
+)
+
+echo "The following packages will be installed:"
+for ((i=0; i<${#qt5-packages[@]}; i++)); do
+    echo "- ${qt5-packages[i]} : ${qt5-explanations[i]}"
+done
+
+echo
+read -p "Do you want to proceed with the installation? (y/n): " choice
+
+if [[ $choice =~ ^[Yy]$ ]]; then
+    echo "Installing the packages..."
+    sudo apt install -y "${qt5-packages[@]}"
+    echo "Package installation completed."
+else
+    echo "Package installation skipped."
+fi
+
+echo
+read -p "Do you want to set the QT_QPA_PLATFORMTHEME environment variable? (y/n): " set_variable
+
+if [[ $set_variable =~ ^[Yy]$ ]]; then
+    echo "Setting the environment variable..."
+    echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
+    echo "Environment variable has been set."
+else
+    echo "Skipping environment variable setup."
+fi
+
+# The default non-free firmware only gives you basic functionality. To get the most out of your 
+# Brodcom WiFi chip, install the following firmware packages:
+echo "Checking if Broadcom Wi-Fi is available on the device..."
+
+if lspci -nnk | grep -i broadcom &> /dev/null; then
+    echo "Broadcom Wi-Fi detected. Installing and enabling 'ALL' Wi-Fi functions..."
+    sudo apt install -y broadcom-sta-dkms broadcom-sta-common firmware-brcm80211
+    sleep 2
+else
+    echo "Broadcom Wi-Fi is not available on this device."
+fi
+
 sleep 2
 
 # Install Bluetooth packages:
-echo "Install and enable 'ALL' Bluetooth Functions ..."
-sudo apt install -y bluetooth bluez bluez-tools bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
-sleep 2
+echo "Checking if Bluetooth is available on the device..."
+
+if lspci -nnk | grep -i bluetooth &> /dev/null; then
+    echo "Bluetooth detected on the device."
+    read -p "Do you want to install Bluetooth packages? (y/n): " choice
+
+    if [[ $choice =~ ^[Yy]$ ]]; then
+        echo "Installing and enabling 'ALL' Bluetooth functions..."
+
+        echo "1. bluetooth: The Bluetooth core libraries and utilities."
+        echo "2. bluez: The official Bluetooth protocol stack for Linux."
+        echo "3. bluez-tools: Command-line utilities for interacting with Bluetooth devices."
+        echo "4. bluez-firmware: Firmware files for specific Bluetooth devices."
+        echo "5. bluez-cups: Integration of Bluetooth printing support with CUPS (Common UNIX Printing System)."
+        echo "6. pulseaudio-module-bluetooth: PulseAudio module for Bluetooth audio support."
+        echo "7. pulseaudio-module-zeroconf: Zeroconf support for PulseAudio Bluetooth audio devices."
+
+        read -p "Proceed with the installation? (y/n): " install_choice
+
+        if [[ $install_choice =~ ^[Yy]$ ]]; then
+            sudo apt install -y bluetooth bluez bluez-tools bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
+            sleep 2
+            echo "Bluetooth packages installed successfully."
+        else
+            echo "Bluetooth packages installation skipped."
+        fi
+    else
+        echo "Bluetooth packages installation skipped."
+    fi
+else
+    echo "Bluetooth is not available on this device."
+fi
 
 # Accsess Root through GUI in KDE (X11 Only):
 # sudo apt install -y dbus-x11 policykit-1
@@ -71,9 +173,81 @@ sleep 2
 # sudo pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true dbus-launch systemsettings5
 
 # Install some software:
-sudo apt install -y acl attr cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba simplescreenrecorder snmp software-properties-common sntp synaptic terminator ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind
-sudo apt install -y libavcodec-extra libdvdcss2 libdvd-pkg vlc rar unrar p7zip-rar nvidia-detect
-sudo apt install -y synaptic cifs-utils acl attr samba winbind libpam-winbind libnss-winbind krb5-config krb5-user dnsutils python3-setproctitle ntp chrony plocate sntp ntpdate software-properties-common terminator htop neofetch simplescreenrecorder rhythmbox plasma-discover-backend-flatpak qapt-deb-installer qapt-utils
+software-packages=(
+    acl attr cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak \
+    gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop \
+    krb5-config krb5-user kdegraphics-thumbnailers libavcodec-extra libdvdcss2 \
+    libdvd-pkg libnss-winbind libpam-winbind neofetch ntp ntpdate \
+    plasma-discover-backend-flatpak plocate python3-setproctitle rhythmbox samba \
+    simplescreenrecorder snmp software-properties-common sntp synaptic terminator \
+    ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind rar unrar p7zip-rar nvidia-detect
+)
+
+software-explanations=(
+    "acl: Access control list utilities for file permissions management."
+    "attr: Tools for managing extended attributes on filesystems."
+    "cifs-utils: Utilities for mounting and managing CIFS/SMB file systems."
+    "dnsutils: DNS utilities for querying DNS servers."
+    "ffmpeg: Complete, cross-platform solution for recording, converting, and streaming audio and video."
+    "ffmpegthumbnailer: Lightweight video thumbnailer."
+    "firmware-realtek: Firmware files for Realtek WiFi cards."
+    "flatpak: Application sandboxing and distribution framework."
+    "gdebi: Simple tool for installing deb packages."
+    "gnome-software-plugin-flatpak: GNOME Software plugin for Flatpak integration."
+    "gstreamer1.0-libav: GStreamer plugins for the libav codec library."
+    "gstreamer1.0-plugins-bad: GStreamer plugins from the 'bad' set."
+    "gstreamer1.0-plugins-ugly: GStreamer plugins from the 'ugly' set."
+    "gstreamer1.0-tools: Tools for GStreamer multimedia framework."
+    "gstreamer1.0-vaapi: GStreamer plugins for video decoding/encoding using VA-API."
+    "htop: Interactive process viewer and system monitor."
+    "krb5-config: Configuration files for Kerberos clients."
+    "krb5-user: Basic Kerberos programs for client machines."
+    "kdegraphics-thumbnailers: Graphics file format thumbnailers for KDE."
+    "libavcodec-extra: Extra multimedia codecs for libavcodec."
+    "libdvdcss2: Library for accessing encrypted DVDs."
+    "libdvd-pkg: Package for installing DVD support on Debian."
+    "libnss-winbind: Name Service Switch module for Winbind."
+    "libpam-winbind: Pluggable Authentication Module for Winbind."
+    "neofetch: Fast, highly customizable system info script."
+    "ntp: Network Time Protocol daemon and utility programs."
+    "ntpdate: Client for setting system time from NTP servers."
+    "plasma-discover-backend-flatpak: Flatpak backend for Plasma Discover."
+    "plocate: Fast filesystem search tool."
+    "python3-setproctitle: Allow customization of the process title."
+    "rhythmbox: Music player and organizer for GNOME."
+    "samba: SMB/CIFS file, print, and login server for Unix."
+    "simplescreenrecorder: Screen recorder for Linux."
+    "snmp: SNMP (Simple Network Management Protocol) applications."
+    "software-properties-common: Software properties common utilities."
+    "sntp: Simple Network Time Protocol (SNTP) client."
+    "synaptic: Graphical package manager for apt."
+    "terminator: Multiple GNOME terminals in one window."
+    "ttf-mscorefonts-installer: Installer for Microsoft TrueType core fonts."
+    "tumbler-plugins-extra: Additional plugins for the tumbler thumbnail rendering service."
+    "vlc: Multimedia player and streaming server."
+    "winbind: Samba utility for resolving user and group information from Windows NT servers."
+    "rar: Archive manager for RAR files."
+    "unrar: Extract files from RAR archives."
+    "p7zip-rar: RAR support for p7zip."
+    "nvidia-detect: NVIDIA GPU detection utility."
+)
+
+echo "The following packages will be installed:"
+for ((i=0; i<${#software-packages[@]}; i++)); do
+    echo "- ${software-packages[i]} : ${software-explanations[i]}"
+done
+
+echo
+read -p "Do you want to proceed with the installation? (y/n): " choice
+
+if [[ $choice =~ ^[Yy]$ ]]; then
+    echo "Installing the packages..."
+    sudo apt install -y "${software-packages[@]}"
+    echo "Package installation completed."
+else
+    echo "Package installation skipped."
+fi
 
 # Setup sudo dpkg-reconfigure libdvd-pkg:
 echo
@@ -469,11 +643,12 @@ read -r -p "
 echo "Done. Time to fstrim."
 sudo fstrim -av
 
-
 echo -e "\n\n----------------------------------------------"
 echo -e "|                                            |"
-echo -e "|        Setup Complete!                     |"
-echo -e "|                       Enjoy debian!        |"
+echo -e "|        Setup Complete! Enjoy debian!       |"
+echo -e "|       Please run RUN-AFTER-INSTALL.sh      |"
+echo -e "|    to back up your APT packages and more   |"
+echo -e "|                                            |"
 echo -e "----------------------------------------------\n\n"
 
 exit 0
