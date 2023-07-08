@@ -18,24 +18,6 @@ SAMBA="/etc/samba"
 SMB_DIR="$builddir/SAMBA"
 WALLPAPERS_DIR="$builddir/WALLPAPER"
 
-# Function to backup installed APT packages
-backup_packages() {
-    echo -e "\nBacking up your package list to your home directory"
-    sudo dpkg --get-selections > ~/Package.list
-
-    echo -e "\nBacking up the list of repositories to your home directory"
-    sudo cp /etc/apt/sources.list ~/sources.list
-
-    echo -e "\nExporting repo keys to your home directory"
-    temp_dir=$(mktemp -d)
-    sudo cp -R /etc/apt/trusted.gpg.d "$temp_dir"
-    sudo chown -R "$USER:$USER" "$temp_dir"
-    rm -rf ~/Repo.keys
-    mv "$temp_dir" ~/Repo.keys
-
-    echo -e "\nBackup completed successfully."
-}
-
 # Update packages list and update system:
 echo "$USER"
 sudo sh -c 'echo "deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
@@ -487,8 +469,6 @@ read -r -p "
 echo "Done. Time to fstrim."
 sudo fstrim -av
 
-# Call the backup_packages() function to run the backup process
-backup_packages
 
 echo -e "\n\n----------------------------------------------"
 echo -e "|                                            |"
