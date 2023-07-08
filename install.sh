@@ -119,7 +119,7 @@ else
 fi
 
 # The default non-free firmware only gives you basic functionality. To get the most out of your 
-# Brodcom WiFi chip, install the following firmware packages:
+# Brodcom WiFi chip, install the following firmware packages::
 echo "Checking if Broadcom Wi-Fi is available on the device..."
 
 if lspci -nnk | grep -i broadcom &> /dev/null; then
