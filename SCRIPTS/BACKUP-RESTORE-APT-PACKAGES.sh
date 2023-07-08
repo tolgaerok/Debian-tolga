@@ -3,22 +3,27 @@
 # My personal Debian and Ubuntu backup / restore APT packages
 # Tolga Erok
 # 7/7/2023
-# NOTE: if SUDO is not configured, Simply use root terminal or SU.
+# NOTE: DO not run as sudo as it will save into root home folder. Run as normal i.e: ./BACKUP-RESTORE-APT-PACKAGES.sh
 # CRITICAL: Any packages installed using a .DEB file or other source not
 # included in your repositories/sources.list, must be removed from Package.list before restoring to avoid errors. These packages will need to be reinstalled manually.
 
-# Function to backup installed APT packages
+# Check if running as root
+if [ "$EUID" -eq 0 ]; then
+    echo "This script should not be run as root. Please run it as a regular user."
+    exit 1
+fi
+
 backup_packages() {
     echo -e "\nBacking up your package list to your home directory"
-    sudo dpkg --get-selections > ~/Package.list
+    dpkg --get-selections > ~/Package.list
 
     echo -e "\nBacking up the list of repositories to your home directory"
-    sudo cp /etc/apt/sources.list ~/sources.list
+    cp /etc/apt/sources.list ~/sources.list
 
     echo -e "\nExporting repo keys to your home directory"
     temp_dir=$(mktemp -d)
-    sudo cp -R /etc/apt/trusted.gpg.d "$temp_dir"
-    sudo chown -R "$USER:$USER" "$temp_dir"
+    cp -R /etc/apt/trusted.gpg.d "$temp_dir"
+    chown -R "$USER:$USER" "$temp_dir"
     rm -rf ~/Repo.keys
     mv "$temp_dir" ~/Repo.keys
 
