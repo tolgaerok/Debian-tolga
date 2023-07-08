@@ -46,30 +46,30 @@ sleep 2
 sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
 
 # Support for additional file systems:
-filesystem-packages=(
+filesystem_packages=(
     btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools \
     reiserfsprogs reiser4progs udftools xfsprogs disktype
 )
 
-filesystem-explanations=(
-    "btrfs-progs: Tools for managing Btrfs file systems."
-    "exfatprogs: Utilities for exFAT file system."
-    "f2fs-tools: Utilities for Flash-Friendly File System (F2FS)."
-    "hfsprogs: Tools for HFS and HFS+ file systems."
-    "hfsplus: Tools for HFS+ file system."
-    "jfsutils: Utilities for JFS (Journaled File System)."
-    "lvm2: Logical Volume Manager 2 utilities."
-    "nilfs-tools: Tools for NILFS (New Implementation of a Log-structured File System)."
-    "reiserfsprogs: Tools for ReiserFS file system."
-    "reiser4progs: Tools for Reiser4 file system."
-    "udftools: Tools for UDF (Universal Disk Format) file system."
-    "xfsprogs: Tools for managing XFS file systems."
-    "disktype: Detects the content format of a disk or disk image."
+filesystem_explanations=(
+    "btrfs-progs              : Tools for managing Btrfs file systems."
+    "exfatprogs               : Utilities for exFAT file system."
+    "f2fs-tools               : Utilities for Flash-Friendly File System (F2FS)."
+    "hfsprogs                 : Tools for HFS and HFS+ file systems."
+    "hfsplus                  : Tools for HFS+ file system."
+    "jfsutils                 : Utilities for JFS (Journaled File System)."
+    "lvm2                     : Logical Volume Manager 2 utilities."
+    "nilfs-tools              : Tools for NILFS (New Implementation of a Log-structured File System)."
+    "reiserfsprogs            : Tools for ReiserFS file system."
+    "reiser4progs             : Tools for Reiser4 file system."
+    "udftools                 : Tools for UDF (Universal Disk Format) file system."
+    "xfsprogs                 : Tools for managing XFS file systems."
+    "disktype                 : Detects the content format of a disk or disk image."
 )
 
 echo "The following packages will be installed:"
-for ((i=0; i<${#filesystem-packages[@]}; i++)); do
-    echo "- ${filesystem-packages[i]} : ${filesystem-explanations[i]}"
+for ((i=0; i<${#filesystem_packages[@]}; i++)); do
+    echo "- ${filesystem_explanations[i]}"
 done
 
 echo
@@ -77,7 +77,7 @@ read -p "Do you want to proceed with the installation? (y/n): " choice
 
 if [[ $choice =~ ^[Yy]$ ]]; then
     echo "Installing the packages..."
-    sudo apt install -y "${filesystem-packages[@]}"
+    sudo apt install -y "${filesystem_packages[@]}"
     echo "Package installation completed."
 else
     echo "Package installation skipped."
@@ -88,7 +88,7 @@ qt5-packages=(
 )
 
 qt5-explanations=(
-    "qt5-style-plugins: Plugins for QT applications to use GTK-based styles."
+    "qt5-style-plugins:     Plugins for QT applications to use GTK-based styles."
 )
 
 echo "The following packages will be installed:"
@@ -137,20 +137,28 @@ echo "Checking if Bluetooth is available on the device..."
 
 if lspci -nnk | grep -i bluetooth &> /dev/null; then
     echo "Bluetooth detected on the device."
-    read -p "Do you want to install Bluetooth packages? (y/n): " choice
+    
+    read -rp "Do you want to install Bluetooth packages? (y/n): " choice
 
     if [[ $choice =~ ^[Yy]$ ]]; then
         echo "Installing and enabling 'ALL' Bluetooth functions..."
+        
+        packages=(
+            "bluetooth:                       The Bluetooth core libraries and utilities."
+            "bluez:                           The official Bluetooth protocol stack for Linux."
+            "bluez-tools:                     Command-line utilities for interacting with Bluetooth devices."
+            "bluez-firmware:                  Firmware files for specific Bluetooth devices."
+            "bluez-cups:                      Integration of Bluetooth printing support with CUPS (Common UNIX Printing System)."
+            "pulseaudio-module-bluetooth:     PulseAudio module for Bluetooth audio support."
+            "pulseaudio-module-zeroconf:      Zeroconf support for PulseAudio Bluetooth audio devices."
+        )
 
-        echo "1. bluetooth: The Bluetooth core libraries and utilities."
-        echo "2. bluez: The official Bluetooth protocol stack for Linux."
-        echo "3. bluez-tools: Command-line utilities for interacting with Bluetooth devices."
-        echo "4. bluez-firmware: Firmware files for specific Bluetooth devices."
-        echo "5. bluez-cups: Integration of Bluetooth printing support with CUPS (Common UNIX Printing System)."
-        echo "6. pulseaudio-module-bluetooth: PulseAudio module for Bluetooth audio support."
-        echo "7. pulseaudio-module-zeroconf: Zeroconf support for PulseAudio Bluetooth audio devices."
+        echo "The following Bluetooth packages will be installed:"
+        for package in "${packages[@]}"; do
+            echo "- $package"
+        done
 
-        read -p "Proceed with the installation? (y/n): " install_choice
+        read -rp "Proceed with the installation? (y/n): " install_choice
 
         if [[ $install_choice =~ ^[Yy]$ ]]; then
             sudo apt install -y bluetooth bluez bluez-tools bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
@@ -173,7 +181,7 @@ fi
 # sudo pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY KDE_SESSION_VERSION=5 KDE_FULL_SESSION=true dbus-launch systemsettings5
 
 # Install some software:
-software-packages=(
+software_packages=(
     acl attr cifs-utils dnsutils ffmpeg ffmpegthumbnailer firmware-realtek flatpak \
     gdebi gnome-software-plugin-flatpak gstreamer1.0-libav gstreamer1.0-plugins-bad \
     gstreamer1.0-plugins-ugly gstreamer1.0-tools gstreamer1.0-vaapi htop \
@@ -184,58 +192,58 @@ software-packages=(
     ttf-mscorefonts-installer tumbler-plugins-extra vlc winbind rar unrar p7zip-rar nvidia-detect
 )
 
-software-explanations=(
-    "acl: Access control list utilities for file permissions management."
-    "attr: Tools for managing extended attributes on filesystems."
-    "cifs-utils: Utilities for mounting and managing CIFS/SMB file systems."
-    "dnsutils: DNS utilities for querying DNS servers."
-    "ffmpeg: Complete, cross-platform solution for recording, converting, and streaming audio and video."
-    "ffmpegthumbnailer: Lightweight video thumbnailer."
-    "firmware-realtek: Firmware files for Realtek WiFi cards."
-    "flatpak: Application sandboxing and distribution framework."
-    "gdebi: Simple tool for installing deb packages."
+software_explanations=(
+    "acl:                        Access control list utilities for file permissions management."
+    "attr:                       Tools for managing extended attributes on filesystems."
+    "cifs-utils:                 Utilities for mounting and managing CIFS/SMB file systems."
+    "dnsutils:                   DNS utilities for querying DNS servers."
+    "ffmpeg:                     Complete, cross-platform solution for recording, converting, and streaming audio and video."
+    "ffmpegthumbnailer:          Lightweight video thumbnailer."
+    "firmware-realtek:           Firmware files for Realtek WiFi cards."
+    "flatpak:                    Application sandboxing and distribution framework."
+    "gdebi:                      Simple tool for installing deb packages."
     "gnome-software-plugin-flatpak: GNOME Software plugin for Flatpak integration."
-    "gstreamer1.0-libav: GStreamer plugins for the libav codec library."
-    "gstreamer1.0-plugins-bad: GStreamer plugins from the 'bad' set."
-    "gstreamer1.0-plugins-ugly: GStreamer plugins from the 'ugly' set."
-    "gstreamer1.0-tools: Tools for GStreamer multimedia framework."
-    "gstreamer1.0-vaapi: GStreamer plugins for video decoding/encoding using VA-API."
-    "htop: Interactive process viewer and system monitor."
-    "krb5-config: Configuration files for Kerberos clients."
-    "krb5-user: Basic Kerberos programs for client machines."
-    "kdegraphics-thumbnailers: Graphics file format thumbnailers for KDE."
-    "libavcodec-extra: Extra multimedia codecs for libavcodec."
-    "libdvdcss2: Library for accessing encrypted DVDs."
-    "libdvd-pkg: Package for installing DVD support on Debian."
-    "libnss-winbind: Name Service Switch module for Winbind."
-    "libpam-winbind: Pluggable Authentication Module for Winbind."
-    "neofetch: Fast, highly customizable system info script."
-    "ntp: Network Time Protocol daemon and utility programs."
-    "ntpdate: Client for setting system time from NTP servers."
+    "gstreamer1.0-libav:         GStreamer plugins for the libav codec library."
+    "gstreamer1.0-plugins-bad:   GStreamer plugins from the 'bad' set."
+    "gstreamer1.0-plugins-ugly:  GStreamer plugins from the 'ugly' set."
+    "gstreamer1.0-tools:         Tools for GStreamer multimedia framework."
+    "gstreamer1.0-vaapi:         GStreamer plugins for video decoding/encoding using VA-API."
+    "htop:                       Interactive process viewer and system monitor."
+    "krb5-config:                Configuration files for Kerberos clients."
+    "krb5-user:                  Basic Kerberos programs for client machines."
+    "kdegraphics-thumbnailers:   Graphics file format thumbnailers for KDE."
+    "libavcodec-extra:           Extra multimedia codecs for libavcodec."
+    "libdvdcss2:                 Library for accessing encrypted DVDs."
+    "libdvd-pkg:                 Package for installing DVD support on Debian."
+    "libnss-winbind:             Name Service Switch module for Winbind."
+    "libpam-winbind:             Pluggable Authentication Module for Winbind."
+    "neofetch:                   Fast, highly customizable system info script."
+    "ntp:                        Network Time Protocol daemon and utility programs."
+    "ntpdate:                    Client for setting system time from NTP servers."
     "plasma-discover-backend-flatpak: Flatpak backend for Plasma Discover."
-    "plocate: Fast filesystem search tool."
-    "python3-setproctitle: Allow customization of the process title."
-    "rhythmbox: Music player and organizer for GNOME."
-    "samba: SMB/CIFS file, print, and login server for Unix."
-    "simplescreenrecorder: Screen recorder for Linux."
-    "snmp: SNMP (Simple Network Management Protocol) applications."
+    "plocate:                    Fast filesystem search tool."
+    "python3-setproctitle:       Allow customization of the process title."
+    "rhythmbox:                  Music player and organizer for GNOME."
+    "samba:                      SMB/CIFS file, print, and login server for Unix."
+    "simplescreenrecorder:       Screen recorder for Linux."
+    "snmp:                       SNMP (Simple Network Management Protocol) applications."
     "software-properties-common: Software properties common utilities."
-    "sntp: Simple Network Time Protocol (SNTP) client."
-    "synaptic: Graphical package manager for apt."
-    "terminator: Multiple GNOME terminals in one window."
-    "ttf-mscorefonts-installer: Installer for Microsoft TrueType core fonts."
-    "tumbler-plugins-extra: Additional plugins for the tumbler thumbnail rendering service."
-    "vlc: Multimedia player and streaming server."
-    "winbind: Samba utility for resolving user and group information from Windows NT servers."
-    "rar: Archive manager for RAR files."
-    "unrar: Extract files from RAR archives."
-    "p7zip-rar: RAR support for p7zip."
-    "nvidia-detect: NVIDIA GPU detection utility."
+    "sntp:                       Simple Network Time Protocol (SNTP) client."
+    "synaptic:                   Graphical package manager for apt."
+    "terminator:                 Multiple GNOME terminals in one window."
+    "ttf-mscorefonts-installer:  Installer for Microsoft TrueType core fonts."
+    "tumbler-plugins-extra:      Additional plugins for the tumbler thumbnail rendering service."
+    "vlc:                        Multimedia player and streaming server."
+    "winbind:                    Samba utility for resolving user and group information from Windows NT servers."
+    "rar:                        Archive manager for RAR files."
+    "unrar:                      Extract files from RAR archives."
+    "p7zip-rar:                  RAR support for p7zip."
+    "nvidia-detect:              NVIDIA GPU detection utility."
 )
 
 echo "The following packages will be installed:"
-for ((i=0; i<${#software-packages[@]}; i++)); do
-    echo "- ${software-packages[i]} : ${software-explanations[i]}"
+for ((i=0; i<${#software_packages[@]}; i++)); do
+    echo "- ${software_explanations[i]}"
 done
 
 echo
@@ -243,7 +251,7 @@ read -p "Do you want to proceed with the installation? (y/n): " choice
 
 if [[ $choice =~ ^[Yy]$ ]]; then
     echo "Installing the packages..."
-    sudo apt install -y "${software-packages[@]}"
+    sudo apt install -y "${software_packages[@]}"
     echo "Package installation completed."
 else
     echo "Package installation skipped."
