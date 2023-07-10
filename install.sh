@@ -343,8 +343,7 @@ sudo apt update && sudo apt install -y powershell
 # Start PowerShell
 # pwsh
 
-# Install VirtualBox 
-# Download dependencies
+# Install VirtualBox and download dependencies
 sudo wget http://http.us.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u5_amd64.deb
 sudo wget http://http.us.debian.org/debian/pool/main/libv/libvpx/libvpx6_1.9.0-1_amd64.deb
 
@@ -364,7 +363,22 @@ sudo apt install -y virtualbox-7.0
 
 sudo wget https://download.virtualbox.org/virtualbox/7.0.0/Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
 sudo VBoxManage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
+
+# Check and fix broken packages
+echo "Checking and fixing broken packages..."
+sudo apt-get -f install
+echo "Broken packages fixed."
+
+# Install Linux kernel header files
+echo "Installing Linux kernel header files..."
+sudo apt-get install -y linux-headers-$(uname -r)
+echo "Linux kernel header files installed successfully."
+
+# Build VirtualBox kernel modules
+echo "Building VirtualBox kernel modules..."
 sudo /sbin/vboxconfig
+echo "VirtualBox kernel modules built successfully."
+
 sudo rm Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
 
 # Check GPU information
