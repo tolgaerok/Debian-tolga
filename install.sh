@@ -18,6 +18,23 @@ SAMBA="/etc/samba"
 SMB_DIR="$builddir/SAMBA"
 WALLPAPERS_DIR="$builddir/WALLPAPER"
 
+# Function to remove residual configuration files
+function remove_residual_config_files() {
+    packages=$(dpkg -l | awk '/^rc/ { print $2 }')
+    if [ -n "$packages" ]; then
+        sudo dpkg -P $packages
+        echo "Residual configuration files removed."
+    else
+        echo "No residual configuration files found."
+    fi
+}
+
+# Function to clear systemd journal logs
+function clear_journal_logs() {
+    sudo journalctl --vacuum-time=7d
+    echo "Systemd journal logs cleared."
+}
+
 # Update packages list and update system:
 echo "$USER"
 sudo sh -c 'echo "deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
@@ -753,7 +770,22 @@ rm ./FiraCode.zip ./Meslo.zip ./WPS-FONTS.zip
 read -r -p "
 ..... Complete" -t 1 -n 1 -s
 
-echo "Done. Time to fstrim."
+sleep 2
+clear
+
+# Lets clean up
+echo -e "\n\n----------------------------------------------"
+echo -e "|     Let's clean up                         |"
+echo -e "----------------------------------------------\n\n"
+sudo update-grub
+sudo apt-get autoremove -y
+sudo apt-get autoclean -y
+clear_journal_logs
+remove_residual_config_files
+
+echo -e "\n\n----------------------------------------------"
+echo -e "|     Let's clean up your SSD                 |"
+echo -e "----------------------------------------------\n\n"
 sudo fstrim -av
 
 echo -e "\n\n----------------------------------------------"
