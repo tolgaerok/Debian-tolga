@@ -32,4 +32,3 @@ if ! systemctl is-active remote-fs.target >/dev/null 2>&1; then
 else
     echo "Remote File Systems target (remote-fs.target) is already installed and active."
 fi
-
