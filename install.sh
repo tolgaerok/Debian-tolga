@@ -30,7 +30,14 @@ deb https://deb.debian.org/debian bookworm-backports main contrib non-free non-f
 deb-src https://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
 " > /etc/apt/sources.list'
 
+
 sudo apt update && sudo apt list --upgradable && sudo apt upgrade -y
+
+# Prerequisites
+sudo apt install software-properties-common
+
+# Ensure that you have the kernel headers installed
+sudo apt install linux-headers-amd64
 
 # Install nala first:
 sudo apt install nala netselect-apt -y
@@ -117,6 +124,12 @@ if [[ $set_variable =~ ^[Yy]$ ]]; then
 else
     echo "Skipping environment variable setup."
 fi
+
+# WiFi Tools Install wireless tools:
+sudo apt install wireless-tools
+
+# Intel firmware for Intel Wireless WiFi Link, Wireless-N, Advanced-N, and Ultimate-N devices, use:
+sudo apt install firmware-iwlwifi
 
 # The default non-free firmware only gives you basic functionality. To get the most out of your
 # Brodcom WiFi chip, install the following firmware packages::
@@ -283,23 +296,36 @@ sudo apt-get install "$download_location" -f -y
 echo "Cleaning up..."
 rm "$download_location"
 
+# Install Google Chrome 
+sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install -y ./google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
+
 # Download Visual Studio Code
-download_url="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-download_location="/tmp/vscode.deb"
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-echo "Downloading Visual Studio Code..."
-wget -O "$download_location" "$download_url"
+sudo apt update
+sudo apt install code
 
-# Install Visual Studio Code
-echo "Installing Visual Studio Code..."
-sudo dpkg -i "$download_location"
-sudo apt-get install "$download_location" -f -y
+echo "Visual code installation completed."
+sleep 2
 
-# Cleanup
-echo "Cleaning up..."
-rm "$download_location"
+# Install visual code extensions
+code --install-extension ms-vscode.cpptools
+code --install-extension ms-vscode.cpptools-themes
+code --install-extension ms-vscode.cpptools-extension-pack
+code --install-extension ms-vscode.cmake-tools
+code --install-extension ms-dotnettools.csharp
+code --install-extension GitHub.copilot
 
-echo "Installation completed."
+# Install GitHub Desktop 
+sudo wget -qO - https://apt.packages.shiftkey.dev/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/shiftkey-packages.gpg > /dev/null
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/shiftkey-packages.gpg] https://apt.packages.shiftkey.dev/ubuntu/ any main" > /etc/apt/sources.list.d/shiftkey-packages.list'
+
+sudo apt update
+sudo apt install github-desktop
 
 # Install system components for powershell
 sudo apt update && sudo apt install -y curl gnupg apt-transport-https
@@ -315,6 +341,30 @@ sudo apt update && sudo apt install -y powershell
 
 # Start PowerShell
 # pwsh
+
+# Install VirtualBox 
+# Download dependencies
+sudo wget http://http.us.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.1n-0+deb11u5_amd64.deb
+sudo wget http://http.us.debian.org/debian/pool/main/libv/libvpx/libvpx6_1.9.0-1_amd64.deb
+
+# Install dependencies
+sudo dpkg -i libssl1.1_1.1.1n-0+deb11u5_amd64.deb
+sudo dpkg -i libvpx6_1.9.0-1_amd64.deb
+
+# Delete files
+sudo rm libssl1.1_1.1.1n-0+deb11u5_amd64.deb
+sudo rm libvpx6_1.9.0-1_amd64.deb
+
+sudo wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian bullseye contrib" > /etc/apt/sources.list.d/virtualbox.list'
+
+sudo apt update
+sudo apt install -y virtualbox-7.0
+
+sudo wget https://download.virtualbox.org/virtualbox/7.0.0/Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
+sudo VBoxManage extpack install --replace Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
+sudo /sbin/vboxconfig
+sudo rm Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
 
 # Check GPU information
 gpu_info=$(lspci | grep -i 'VGA\|3D')
@@ -334,15 +384,23 @@ if [[ $gpu_info =~ "NVIDIA" ]]; then
         sudo apt update
         sudo apt install nvidia-driver firmware-misc-nonfree -y
         sudo apt install -y nvidia-driver
+        sudo bash -c 'echo -e "blacklist nouveau\noptions nouveau modeset=0" >> /etc/modprobe.d/blacklist-nouveau.conf'
         echo "NVIDIA drivers installed successfully."
-    fi
+        
+        # Run NVIDIA settings
+        sudo nvidia-settings
+    fi 
 
-    # Run NVIDIA settings
-    sudo nvidia-settings
+elif [[ $gpu_info =~ "AMD" ]]; then
+    # Install firmware for AMD GPU
+    sudo apt update
+    sudo apt install firmware-amd-graphics -y
+    echo "AMD GPU firmware installed successfully."
 
 else
     # Install video acceleration for HD Intel i965
     sudo apt update
+    sudo apt install xserver-xorg-video-intel
     sudo apt install -y i965-va-driver libva-drm2 libva-x11-2 vainfo
     echo "Video acceleration drivers installed successfully."
 fi
