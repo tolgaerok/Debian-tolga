@@ -417,6 +417,16 @@ if [[ $gpu_info =~ "NVIDIA" ]]; then
         sudo apt install nvidia-driver firmware-misc-nonfree -y
         sudo apt install -y nvidia-driver
         sudo bash -c 'echo -e "blacklist nouveau\noptions nouveau modeset=0" >> /etc/modprobe.d/blacklist-nouveau.conf'
+       
+        # Path to the grub configuration file
+        grub_file="/etc/default/grub" 
+        
+        # Comment out the existing GRUB_CMDLINE_LINUX line
+        sed -i 's/^GRUB_CMDLINE_LINUX=/#&/' "$grub_file"
+
+        # Add the new GRUB_CMDLINE_LINUX line after the commented line
+        sed -i '/^#GRUB_CMDLINE_LINUX=/a GRUB_CMDLINE_LINUX="rhgb quiet rd.driver.blacklist=nouveau"' "$grub_file"
+        
         sudo update-grub
 
         echo "NVIDIA drivers installed successfully."
