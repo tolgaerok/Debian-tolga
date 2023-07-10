@@ -524,33 +524,29 @@ echo "Mount entries added to /etc/fstab.
 if ! command -v systemctl >/dev/null 2>&1; then
     echo "Systemd is not installed."
 
-    # Check if the system is Debian-based
+    # Check if the systemd is present and installed on Debian-base
     if command -v apt-get >/dev/null 2>&1; then
-        echo "Installing systemd for Debian-based systems..."
+        echo "Installing systemd..."
         sudo apt-get update
         sudo apt-get install systemd -y
-        echo "Systemd has been installed."   
+        echo "Systemd has been installed."
     else
         echo "Unsupported distribution. Cannot install systemd."
         exit 1
     fi
 fi
 
-# Check if systemd is running
-if systemctl is-active systemd >/dev/null 2>&1; then
-    echo "Systemd is running."
+# Check if remote-fs.target is installed
+if ! systemctl is-active remote-fs.target >/dev/null 2>&1; then
+    echo "Remote File Systems target (remote-fs.target) is not installed."
 
-    # Check if remote-fs.target is enabled
-    if systemctl is-enabled remote-fs.target >/dev/null 2>&1; then
-        echo "Automounting is already enabled."
-    else
-        # Enable and start remote-fs.target
-        echo "Enabling and starting automounting..."
-        sudo systemctl enable --now remote-fs.target
-        echo "Automounting has been enabled and started."
-    fi
+    # Enable and start remote-fs.target
+    echo "Enabling and starting remote-fs.target..."
+    sudo systemctl enable remote-fs.target
+    sudo systemctl start remote-fs.target
+    echo "Remote File Systems target has been enabled and started."
 else
-    echo "Systemd is not running. Automounting cannot be configured."
+    echo "Remote File Systems target (remote-fs.target) is already installed and active."
 fi
 
 sudo systemctl daemon-reload
