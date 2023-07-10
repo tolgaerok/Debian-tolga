@@ -193,6 +193,8 @@ if lspci -nnk | grep -i bluetooth &>/dev/null; then
 
         if [[ $install_choice =~ ^[Yy]$ ]]; then
             sudo apt install -y bluetooth bluez bluez-tools bluez-firmware bluez-cups bluez-tools pulseaudio-module-bluetooth pulseaudio-module-zeroconf
+            sudo systemctl start bluetooth 
+            sudo systemctl enable bluetooth
             sleep 2
             echo "Bluetooth packages installed successfully."
         else
