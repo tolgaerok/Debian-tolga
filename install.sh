@@ -38,6 +38,7 @@ sudo apt install software-properties-common
 
 # Ensure that you have the kernel headers installed
 sudo apt install linux-headers-amd64
+sudo update-grub
 
 # Install nala first:
 sudo apt install nala netselect-apt -y
@@ -385,6 +386,8 @@ if [[ $gpu_info =~ "NVIDIA" ]]; then
         sudo apt install nvidia-driver firmware-misc-nonfree -y
         sudo apt install -y nvidia-driver
         sudo bash -c 'echo -e "blacklist nouveau\noptions nouveau modeset=0" >> /etc/modprobe.d/blacklist-nouveau.conf'
+        sudo update-grub
+
         echo "NVIDIA drivers installed successfully."
         
         # Run NVIDIA settings
