@@ -129,18 +129,45 @@ if [[ $choice =~ ^[Yy]$ ]]; then
     sudo apt install -y "${qt5_packages[@]}"
     echo "Package installation completed."
 else
-    echo "Package installation skipped."
+    if dpkg -s ${qt5_packages[0]} >/dev/null 2>&1; then
+        read -p "The package ${qt5_packages[0]} is already installed. Do you want to uninstall it? (y/n): " uninstall_choice
+        if [[ $uninstall_choice =~ ^[Yy]$ ]]; then
+            echo "Uninstalling the package..."
+            sudo apt remove -y "${qt5_packages[@]}"
+            echo "Package uninstallation completed."
+        else
+            echo "Package installation skipped."
+        fi
+    else
+        echo "Package installation skipped."
+    fi
 fi
 
-echo
+echo "The QT_QPA_PLATFORMTHEME environment variable is used by the Qt framework to define the platform theme used for graphical user interfaces (GUIs) in Qt-based applications."
+echo "The platform theme determines the visual style and behavior of the application's UI components, such as buttons, windows, and menus."
+echo "Setting the QT_QPA_PLATFORMTHEME environment variable allows you to specify a particular platform theme to be used by Qt applications."
+echo "This can be useful when you want to customize the appearance or behavior of Qt-based applications running on your system."
+echo ""
+
 read -p "Do you want to set the QT_QPA_PLATFORMTHEME environment variable? (y/n): " set_variable
 
 if [[ $set_variable =~ ^[Yy]$ ]]; then
     echo "Setting the environment variable..."
-    echo "export QT_QPA_PLATFORMTHEME=gtk2" >>~/.profile
+    if grep -q "QT_QPA_PLATFORMTHEME" ~/.profile; then
+        sed -i 's/#export QT_QPA_PLATFORMTHEME=gtk2/export QT_QPA_PLATFORMTHEME=gtk2/' ~/.profile
+    else
+        echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
+    fi
     echo "Environment variable has been set."
 else
-    echo "Skipping environment variable setup."
+    read -p "Do you want to undo the export of QT_QPA_PLATFORMTHEME? (y/n): " undo_variable
+    if [[ $undo_variable =~ ^[Yy]$ ]]; then
+        echo "Undoing the export of QT_QPA_PLATFORMTHEME..."
+        sed -i 's/export QT_QPA_PLATFORMTHEME=gtk2/#export QT_QPA_PLATFORMTHEME=gtk2/' ~/.profile
+        echo "Environment variable has been unset."
+    else
+        echo "Skipping environment variable setup."
+    fi
 fi
 
 # WiFi Tools Install wireless tools:
