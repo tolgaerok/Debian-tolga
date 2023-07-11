@@ -659,23 +659,21 @@ sudo systemctl restart smb.service nmb.service
 # Check Samba configuration
 sudo testparm -s
 
-# Prompt for user to open browser to kde store - share plugin
-read -p $'\n'"Press Enter to open the Samba Filesharing Plugin website. Please select [ install ] when ready ...  "
+# Prompt for user to open browser to KDE Store - share plugin
+read -p $'\n'"Press Enter to open the Samba Filesharing Plugin website. Please select [install] when ready ..."
 
 # Check if Firefox is installed
 if command -v firefox >/dev/null 2>&1; then
-    sudo -u $username firefox "https://apps.kde.org/kdenetwork_filesharing/"
-    exit 0
-fi
-
+    sudo -u $USER firefox "https://apps.kde.org/kdenetwork_filesharing/"
+    sleep 2
 # Check if Chrome is installed
-if command -v google-chrome-stable >/dev/null 2>&1; then
-    sudo -u $username google-chrome-stable "https://apps.kde.org/kdenetwork_filesharing/"
-    exit 0
+elif command -v google-chrome-stable >/dev/null 2>&1; then
+    sudo -u $USER google-chrome-stable "https://apps.kde.org/kdenetwork_filesharing/"
+    sleep 2
+else
+    # If neither Firefox nor Chrome is found, display an error message
+    echo "Error: Neither Firefox nor Chrome is installed."
 fi
-
-# If neither Firefox nor Chrome is found, display an error message
-echo "Error: Neither Firefox nor Chrome is installed."
 
 read -r -p "
 Continuing ... " -t 1 -n 1 -s
@@ -716,7 +714,7 @@ if ! command -v systemctl >/dev/null 2>&1; then
         echo "Systemd has been installed."
     else
         echo "Unsupported distribution. Cannot install systemd."
-        exit 1
+        sleep 4
     fi
 fi
 
