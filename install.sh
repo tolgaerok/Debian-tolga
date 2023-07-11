@@ -323,9 +323,54 @@ echo "The necessary components for DVD playback are going to be properly install
 sleep 3
 sudo dpkg-reconfigure libdvd-pkg
 
-# Set-up flatpak and some flatpak software:
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install -y flathub com.sindresorhus.Caprine
+echo -e "Install Flatpak apps...\n"
+
+# Enable Flatpak
+if ! flatpak remote-list | grep -q "flathub"; then
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+fi
+
+# Update Flatpak
+flatpak update -y
+
+echo -e "Updating cache, this will take a while...\n"
+
+# Install Flatpak apps
+packages=(
+    app.drey.Dialect
+    com.anydesk.Anydesk
+    com.calibre_ebook.calibre
+    com.github.unrud.VideoDownloader
+    com.sindresorhus.Caprine
+    com.sublimetext.three
+    com.transmissionbt.Transmission
+    com.wps.Office
+    io.github.aandrew_me.ytdn
+    io.github.mimbrero.WhatsAppDesktop
+    org.audacityteam.Audacity
+    org.gimp.GIMP
+    org.gnome.Shotwell
+    org.gnome.SimpleScan
+    org.gnome.gitlab.YaLTeR.VideoTrimmer
+    org.kde.krita
+    org.kde.kweather
+)
+
+# Install each package if not already installed
+for package in "${packages[@]}"; do
+    if ! flatpak list | grep -q "$package"; then
+        echo "Installing $package..."
+        flatpak install -y flathub "$package"
+    else
+        echo "$package is already installed. Skipping..."
+    fi
+done
+
+# Double check for the latest Flatpak updates and remove Flatpak cruft
+flatpak update -y
+flatpak uninstall --unused --delete-data -y
+
+echo -e "\nSoftware install complete..."
 
 # Download teamviewer:
 download_url="https://download.teamviewer.com/download/linux/teamviewer_amd64.deb?utm_source=google&utm_medium=cpc&utm_campaign=au%7Cb%7Cpr%7C22%7Cjun%7Ctv-core-download-sn%7Cfree%7Ct0%7C0&utm_content=Download&utm_term=download+teamviewer"
@@ -348,6 +393,14 @@ sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.
 sudo apt install -y ./google-chrome-stable_current_amd64.deb
 rm google-chrome-stable_current_amd64.deb
 
+# Install .NET 
+wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+sudo apt update
+sudo apt install -y dotnet-sdk-7.0 aspnetcore-runtime-7.0
+
 # Download Visual Studio Code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
@@ -365,7 +418,7 @@ code --install-extension ms-vscode.cpptools-themes
 code --install-extension ms-vscode.cpptools-extension-pack
 code --install-extension ms-vscode.cmake-tools
 code --install-extension ms-dotnettools.csharp
-code --install-extension GitHub.copilot
+# code --install-extension GitHub.copilot
 
 # Install GitHub Desktop 
 sudo wget -qO - https://apt.packages.shiftkey.dev/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/shiftkey-packages.gpg > /dev/null
