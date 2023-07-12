@@ -32,11 +32,10 @@ filesystem_explanations=(
     "disktype                 : Detects the content format of a disk or disk image."
 )
 
-echo -e "\e[34m===============================================\e[0m"
-echo -e "\e[1m\e[34m Support for additional file systems     \e[0m"
-echo -e "\e[34m===============================================\e[0m"
+
 echo
 echo "The following packages will be installed:"
+echo
 for ((i = 0; i < ${#filesystem_packages[@]}; i++)); do
    echo -e "\e[0m\e[1m- ${filesystem_explanations[i]}\e[0m"
 done
