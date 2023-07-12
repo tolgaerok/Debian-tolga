@@ -32,6 +32,6 @@ if ! systemctl is-active remote-fs.target >/dev/null 2>&1; then
     echo "Remote File Systems target has been enabled and started."
     sleep 3
 else
-    echo -e "\e\n[1m\e[34mRemote File Systems target (remote-fs.target) is already installed and active."
+    echo -e "\n\e\n[1m\e[34mRemote File Systems target (remote-fs.target) is already installed and active."
     sleep 4
 fi
