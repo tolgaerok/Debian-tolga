@@ -47,6 +47,10 @@ if [[ $choice =~ ^[Yy]$ ]]; then
     echo "Installing the packages..."
     sudo apt install -y "${filesystem_packages[@]}"
     echo "Package installation completed."
+    sleep 2
+    exit 0
 else
     echo "Package installation skipped."
+    sleep 2
+    exit 0
 fi
