@@ -18,14 +18,14 @@ current_user=$(logname)
 if grep -q "^$current_user" /etc/sudoers; then
     echo -e "\n\e[1m\e[34mUser $current_user is already in the sudoers file.\e[0m"
     sleep 3
-    exit 0
+    #exit 0
 fi
 
 # Run visudo to safely edit the sudoers file
 if ! visudo -f /etc/sudoers.d/add_user_sudoers; then
     echo -e "\n\e[1m\e[33mFailed to edit the sudoers file.\e[0m"
     sleep 2
-    exit 0
+    #exit 0
 fi
 
 # Create a sudoers file for adding the current user
@@ -43,3 +43,4 @@ fi
 
 # Secure the sudoers file permissions
 chmod 440 "$sudoers_file"
+exit 0
