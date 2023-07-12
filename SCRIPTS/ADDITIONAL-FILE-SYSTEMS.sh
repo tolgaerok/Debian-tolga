@@ -50,7 +50,7 @@ read -p "Do you want to proceed with the installation? (y/n): " choice
 if [[ $choice =~ ^[Yy]$ ]]; then
     echo "Installing the packages..."
     sudo apt install -y "${filesystem_packages[@]}"
-    echo "Package installation completed."
+    echo -e "\n\e[33mPackage installation completed.\e[0m"
     sleep 2
     exit 0
 else
