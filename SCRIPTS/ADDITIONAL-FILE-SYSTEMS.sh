@@ -6,13 +6,15 @@
 
 # Install Linux Firmware and base packages:
 sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
-clear
+
 
 # Support for additional file systems:
 filesystem_packages=(
     btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools
     reiserfsprogs reiser4progs udftools xfsprogs disktype
 )
+
+clear
 
 filesystem_explanations=(
     "btrfs-progs              : Tools for managing Btrfs file systems."
