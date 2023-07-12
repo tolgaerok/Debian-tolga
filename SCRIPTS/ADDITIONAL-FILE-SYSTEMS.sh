@@ -31,17 +31,18 @@ filesystem_explanations=(
 
 clear 
 
-echo -e "\e[34m===============================================\e[0m"
-echo -e "\e[1m\e[34m Support for additional file systems     \e[0m"
-echo -e "\e[34m===============================================\e[0m"
-echo
+
 
 echo "The following packages will be installed:"
 for ((i = 0; i < ${#filesystem_packages[@]}; i++)); do
    echo -e "\e[0m\e[1m- ${filesystem_explanations[i]}\e[0m"
 done
 
+echo -e "\e[34m===============================================\e[0m"
+echo -e "\e[1m\e[34m Support for additional file systems     \e[0m"
+echo -e "\e[34m===============================================\e[0m"
 echo
+
 read -p "Do you want to proceed with the installation? (y/n): " choice
 
 if [[ $choice =~ ^[Yy]$ ]]; then
