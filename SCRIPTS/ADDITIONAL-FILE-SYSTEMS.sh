@@ -11,7 +11,7 @@ echo -e "\e[34m===============================================\e[0m"
 echo
 
 # Install Linux Firmware and base packages:
-sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
+sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms && clear
 
 # Support for additional file systems:
 filesystem_packages=(
