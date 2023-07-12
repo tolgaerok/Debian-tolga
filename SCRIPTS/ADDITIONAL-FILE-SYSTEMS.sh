@@ -37,7 +37,7 @@ filesystem_explanations=(
 
 echo "The following packages will be installed:"
 for ((i = 0; i < ${#filesystem_packages[@]}; i++)); do
-   echo -e ""\e[0m\e[1m- ${filesystem_explanations[i]}\e[0m"
+   echo -e "\e[0m\e[1m- ${filesystem_explanations[i]}\e[0m"
 done
 
 echo
