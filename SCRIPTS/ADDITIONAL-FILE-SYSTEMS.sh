@@ -7,14 +7,11 @@
 # Install Linux Firmware and base packages:
 sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
 
-
 # Support for additional file systems:
 filesystem_packages=(
     btrfs-progs exfatprogs f2fs-tools hfsprogs hfsplus jfsutils lvm2 nilfs-tools
     reiserfsprogs reiser4progs udftools xfsprogs disktype
 )
-
-clear
 
 filesystem_explanations=(
     "btrfs-progs              : Tools for managing Btrfs file systems."
@@ -33,11 +30,13 @@ filesystem_explanations=(
 )
 
 clear
-    echo -e "\e[34m===============================================\e[0m"
-    echo -e "\e[33m Support for additional file systems installer     \e[0m"
-    echo -e "\e[34m===============================================\e[0m"
-    echo
-echo -e " \e[1m\e[93mThe following packages will be installed:"
+
+echo -e "\e[34m===============================================\e[0m"
+echo -e "\e[33m Support for additional file systems installer     \e[0m"
+echo -e "\e[34m===============================================\e[0m"
+echo
+
+echo -e " \e[1m\e[93mThe following packages will be installed:\e[0m"
 echo
 
 for ((i = 0; i < ${#filesystem_packages[@]}; i++)); do
@@ -48,9 +47,9 @@ echo
 read -p "Do you want to proceed with the installation? (y/n): " choice
 
 if [[ $choice =~ ^[Yy]$ ]]; then
-    echo -e "\n\e[33mInstalling the packages.. \e[0m"
+    echo -e "\n\e[33mInstalling the packages...\e[0m"
     sudo apt install -y "${filesystem_packages[@]}"
-    echo -e "\n\e[33mPackage installation completed. \e[0m"
+    echo -e "\n\e[33mPackage installation completed.\e[0m"
     sleep 2
     exit 0
 else
