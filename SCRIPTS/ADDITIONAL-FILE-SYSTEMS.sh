@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # My personal debian 12 installer, KDE PLASMA
-# Tolga Erok
+# Tolga Erok 
 # 28/6/2023
 
 # Install Linux Firmware and base packages:
