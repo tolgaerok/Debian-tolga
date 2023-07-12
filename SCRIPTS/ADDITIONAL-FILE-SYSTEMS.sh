@@ -4,10 +4,8 @@
 # Tolga Erok
 # 28/6/2023
 
-clear
-
 # Install Linux Firmware and base packages:
-sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms && clear
+sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
 
 # Support for additional file systems:
 filesystem_packages=(
@@ -30,6 +28,9 @@ filesystem_explanations=(
     "xfsprogs                 : Tools for managing XFS file systems."
     "disktype                 : Detects the content format of a disk or disk image."
 )
+
+clear 
+
 echo -e "\e[34m===============================================\e[0m"
 echo -e "\e[1m\e[34m Support for additional file systems     \e[0m"
 echo -e "\e[34m===============================================\e[0m"
