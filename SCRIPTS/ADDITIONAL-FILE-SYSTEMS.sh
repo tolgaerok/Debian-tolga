@@ -34,10 +34,10 @@ filesystem_explanations=(
 
 clear
     echo -e "\e[34m===============================================\e[0m"
-    echo -e "\e[1m\e[34m Tolga's personal debian installer     \e[0m"
+    echo -e "\e[33m Support for additional file systems installer     \e[0m"
     echo -e "\e[34m===============================================\e[0m"
     echo
-echo "The following packages will be installed:"
+echo -e " \e[1m\e[93mThe following packages will be installed:"
 echo
 
 for ((i = 0; i < ${#filesystem_packages[@]}; i++)); do
