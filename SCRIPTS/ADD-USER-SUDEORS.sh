@@ -14,7 +14,7 @@ current_user=$(logname)
 
 # Check if the current user is already in sudoers
 if grep -q "^$current_user" /etc/sudoers; then
-    echo -e "\n\e[33mUser $current_user is already in the sudoers file.\e[0m"
+    echo -e "\e\n[33mUser $current_user is already in the sudoers file.\e[0m"
     sleep 3
     exit 0
 fi
