@@ -1,6 +1,8 @@
 #!/bin/bash
-# Tolga Erok  6/7/2023
-# Add the current user to the list of debian sudoers.
+
+# Tolga Erok
+# 6/7/2023
+# Add the current user to the list of sudoers.
 
 # Check if the script is being run as root
 if [[ $EUID -ne 0 ]]; then
@@ -19,11 +21,16 @@ if grep -q "^$current_user" /etc/sudoers; then
     exit 0
 fi
 
-# Backup the sudoers file
-cp /etc/sudoers /etc/sudoers.backup
+# Run visudo to safely edit the sudoers file
+if ! visudo -f /etc/sudoers.d/add_user_sudoers; then
+    echo -e "\n\e[1m\e[33mFailed to edit the sudoers file.\e[0m"
+    sleep 2
+    exit 0
+fi
 
-# Add the current user to sudoers
-echo "$current_user ALL=(ALL:ALL) ALL" >> /etc/sudoers
+# Create a sudoers file for adding the current user
+sudoers_file="/etc/sudoers.d/add_user_sudoers"
+echo "$current_user ALL=(ALL:ALL) ALL" > "$sudoers_file"
 
 # Verify if the modification was successful
 if [ $? -eq 0 ]; then
@@ -32,6 +39,7 @@ if [ $? -eq 0 ]; then
 else
     echo -e "\n\e[1m\e[33mFailed to add user $current_user to the sudoers file.\e[0m"
     sleep 2
-    # Restore the backup
-    mv /etc/sudoers.backup /etc/sudoers
 fi
+
+# Secure the sudoers file permissions
+chmod 440 "$sudoers_file"
