@@ -23,7 +23,7 @@ fi
 cp /etc/sudoers /etc/sudoers.backup
 
 # Add the current user to sudoers
-echo "$current_user ALL=(ALL:ALL) ALL" >>/etc/sudoers
+echo "$current_user ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
 # Verify if the modification was successful
 if [ $? -eq 0 ]; then
