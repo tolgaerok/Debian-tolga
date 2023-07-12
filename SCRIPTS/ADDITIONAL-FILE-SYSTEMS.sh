@@ -5,7 +5,8 @@
 # 28/6/2023
 
 # Install Linux Firmware and base packages:
-echo -e "\e[34mInstall Linux Firmware and base packages\e[0m"
+clear
+echo -e "\n\e[34mInstall Linux Firmware and base packages\e[0m"
 sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
 sleep 3
 
