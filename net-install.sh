@@ -1,10 +1,14 @@
 #!/bin/bash
+#   =====================   BETA    ============================
+# Tolga Erok
+# My Personal Debian net-nstaller Menu
+# 12/7/2023
 
 # Function to display the menu
 function show_menu() {
     clear
     echo -e "\e[34m===============================================\e[0m"
-    echo -e "\e[1m\e[34m Tolga's Personal Debian Installer Menu \e[0m"
+    echo -e "\e[1m\e[34m Tolga's Personal Debian net-nstaller Menu \e[0m"
     echo -e "\e[34m===============================================\e[0m"
     echo
     echo -e " \e[1m\e[93m1.     \e[0m\e[1mRun Debian updater script\e[0m"
@@ -127,6 +131,31 @@ while true; do
     6)
         run_script "ADDITIONAL-FILE-SYSTEMS.sh"
         ;;
+    7)
+        run_script "some-script.sh"
+        ;;
+    8)
+        run_script "some-script.sh"
+        ;;
+    9)
+        run_script "some-script.sh"
+        ;;
+    10)
+        run_script "some-script.sh"
+        ;;
+    11)
+        run_script "some-script.sh"
+        ;;
+    12)
+        run_script "some-script.sh"
+        ;;
+    13)
+        run_script "some-script.sh"
+        ;;
+    14)
+        run_script "some-script.sh"
+        ;;
+
     *)
         echo "Invalid choice. Please try again."
         ;;
