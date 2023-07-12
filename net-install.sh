@@ -4,7 +4,7 @@
 function show_menu() {
     clear
     echo -e "\e[34m===============================================\e[0m"
-    echo -e "\e[1m\e[34m Tolga's personal debian installer     \e[0m"
+    echo -e "\e[1m\e[34m Tolga's Personal Debian Installer Menu \e[0m"
     echo -e "\e[34m===============================================\e[0m"
     echo
     echo -e " \e[1m\e[93m1.     \e[0m\e[1mRun Debian updater script\e[0m"
@@ -13,8 +13,15 @@ function show_menu() {
     echo -e " \e[1m\e[93m4.     \e[0m\e[1mRun Mount all\e[0m"
     echo -e " \e[1m\e[93m5.     \e[0m\e[1mRun Un-mount all\e[0m"
     echo -e " \e[1m\e[93m6.     \e[0m\e[1mInstall Additional file systems\e[0m"
+    echo -e " \e[1m\e[93m7.     \e[0m\e[1m script   \e[0m"
+    echo -e " \e[1m\e[93m8.     \e[0m\e[1m script   \e[0m"
+    echo -e " \e[1m\e[93m9.     \e[0m\e[1m  script   \e[0m"
+    echo -e " \e[1m\e[93m10.     \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m11.     \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m12.     \e[0m\e[1m script  \e[0m"
     echo
     echo -e "\e[34m 0.     \e[0m\e[34mExit\e[0m"
+
     echo
     echo -e "\e[34m===============================================\e[0m"
 }
