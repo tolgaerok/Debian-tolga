@@ -3,7 +3,7 @@
 # Tolga Erok
 # 10/7/2023
 # Check if systemd is installed, enabled and activate remote-fs for automounting their fstab
-
+echo -e "\n\e[1m\e[34mActivating systemd checker ...\e[0m"
 # Check if systemd is installed
 if ! command -v systemctl >/dev/null 2>&1; then
     echo -e "\n\e[1m\e[34mSystemd is not installed.\e[0m"
