@@ -1,33 +1,51 @@
 #!/bin/bash
+
 #   =====================   BETA    ============================
+
 # Tolga Erok
-# My Personal Debian net-nstaller Menu
+# My Personal Debian Net-Installer Menu
 # 12/7/2023
 
 # Function to display the menu
 function show_menu() {
     clear
     echo -e "\e[34m===============================================\e[0m"
-    echo -e "\e[1m\e[34m Tolga's Personal Debian net-nstaller Menu \e[0m"
+    echo -e "\e[1m\e[34m  Tolga's Personal Debian Net-Installer Menu   \e[0m"
     echo -e "\e[34m===============================================\e[0m"
     echo
-    echo -e " \e[1m\e[93m1.     \e[0m\e[1mRun Debian updater script\e[0m"
-    echo -e " \e[1m\e[93m2.     \e[0m\e[1mRun Check systemd script\e[0m"
-    echo -e " \e[1m\e[93m3.     \e[0m\e[1mAdd user to sudoers\e[0m"
-    echo -e " \e[1m\e[93m4.     \e[0m\e[1mRun Mount all\e[0m"
-    echo -e " \e[1m\e[93m5.     \e[0m\e[1mRun Un-mount all\e[0m"
-    echo -e " \e[1m\e[93m6.     \e[0m\e[1mInstall Additional file systems\e[0m"
-    echo -e " \e[1m\e[93m7.     \e[0m\e[1m script   \e[0m"
-    echo -e " \e[1m\e[93m8.     \e[0m\e[1m script   \e[0m"
-    echo -e " \e[1m\e[93m9.     \e[0m\e[1m  script   \e[0m"
-    echo -e " \e[1m\e[93m10.     \e[0m\e[1m script  \e[0m"
-    echo -e " \e[1m\e[93m11.     \e[0m\e[1m script  \e[0m"
-    echo -e " \e[1m\e[93m12.     \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m1.   \e[0m\e[1m Run Debian updater script\e[0m"
+    echo -e " \e[1m\e[93m2.   \e[0m\e[1m Run Check systemd script\e[0m"
+    echo -e " \e[1m\e[93m3.   \e[0m\e[1m Add user to sudoers\e[0m"
+    echo -e " \e[1m\e[93m4.   \e[0m\e[1m Run Mount all\e[0m"
+    echo -e " \e[1m\e[93m5.   \e[0m\e[1m Run Un-mount all\e[0m"
+    echo -e " \e[1m\e[93m6.   \e[0m\e[1m Install Additional file systems\e[0m"
+    echo -e " \e[1m\e[93m7.   \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m8.   \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m9.   \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m10.  \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m11.  \e[0m\e[1m script  \e[0m"
+    echo -e " \e[1m\e[93m12.  \e[0m\e[1m script  \e[0m"
     echo
-    echo -e "\e[34m 0.     \e[0m\e[34mExit\e[0m"
+    echo -e "\e[34m 0.   \e[0m\e[34mExit\e[0m"
+    echo
+    echo -e "\e[34m===============================================\e[0m"
 
-    echo
-    echo -e "\e[34m===============================================\e[0m"
+    # Remove the temporary image files
+    rm -f /tmp/deb-logo.png /tmp/deb-logo-resized.png
+}
+
+function bye() {
+    # Download the Debian logo image
+    curl -sSL -o /tmp/deb-logo.png https://github.com/tolgaerok/Debian-tolga/raw/main/WALLPAPERS/deb-logo.png
+
+    # Resize the image to 101x85
+    convert /tmp/deb-logo.png -resize 101x98 /tmp/deb-logo-resized.png
+
+    # Display the Debian ASCII art logo as the background
+    jp2a --background=light --colors --width="$(tput cols)" /tmp/deb-logo-resized.png
+
+    # Remove the temporary image file
+    rm -f /tmp/deb-logo.png /tmp/deb-logo-resized.png
 }
 
 # Function to run a script based on its name
@@ -111,6 +129,7 @@ while true; do
     case $choice in
     0)
         echo "Exiting..."
+        bye
         break
         ;;
     1)
