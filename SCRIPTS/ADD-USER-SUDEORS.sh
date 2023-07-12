@@ -5,11 +5,11 @@
 # Add the current user to the list of sudoers.
 
 # Check if the script is being run as root
-if [[ $EUID -ne 0 ]]; then
+#if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root."
     sleep 3
-    exit 0
-fi
+   # exit 0
+#fi
 
 # Get the username of the current user
 current_user=$(logname)
