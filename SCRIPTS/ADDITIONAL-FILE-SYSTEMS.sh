@@ -6,6 +6,7 @@
 
 # Install Linux Firmware and base packages:
 sudo apt install -y firmware-linux firmware-linux-nonfree firmware-misc-nonfree linux-headers-$(uname -r) dkms
+sleep 2
 
 # Support for additional file systems:
 filesystem_packages=(
