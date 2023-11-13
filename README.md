@@ -66,6 +66,10 @@ cd ./Debian-tolga
 ```sh
 chmod u+x ./install.sh
 ./install.sh
+
+or run my online debian updater:
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/tolgaerok/Debian-tolga/main/SCRIPTS/DEBIAN-UPDATER.sh)"
+
 ```
 
 ## *Other repositories in my git hub:*
