@@ -7,7 +7,7 @@
 # 12/7/2023
 
 # Run from remote location:
-# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/tolgaerok/tolgaerok/Debian-tolga/main/net-install.sh)"
+# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/tolgaerok/Debian-tolga/main/net-install.sh)"
 
 # Function to display the menu
 function show_menu() {
