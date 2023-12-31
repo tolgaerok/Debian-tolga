@@ -2,6 +2,9 @@
 
 #  Tolga Erok  4/7/2023  Common debian commands used in menu format
 
+# Run from remote location:
+# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/tolgaerok/Debian-tolga/main/SCRIPTS/DEBIAN-UPDATER.sh)"
+
 # Function to display the main menu
 function display_menu() {
     clear
