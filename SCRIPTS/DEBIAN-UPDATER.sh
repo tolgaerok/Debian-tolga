@@ -4,6 +4,8 @@
 
 # Run from remote location:
 # sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/tolgaerok/Debian-tolga/main/SCRIPTS/DEBIAN-UPDATER.sh)"
+# bash -c "$(wget -qLO - https://raw.githubusercontent.com/tolgaerok/Debian-tolga/main/SCRIPTS/DEBIAN-UPDATER.sh)"
+
 
 # Function to display the main menu
 function display_menu() {
