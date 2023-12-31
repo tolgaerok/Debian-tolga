@@ -6,6 +6,9 @@
 # My Personal Debian Net-Installer Menu
 # 12/7/2023
 
+# Run from remote location:
+# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/tolgaerok/tolgaerok/Debian-tolga/edit/main/net-install.sh)"
+
 # Function to display the menu
 function show_menu() {
     clear
